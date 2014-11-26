@@ -35,3 +35,60 @@ h4.taxonomy_title{
     padding:10px 20px;
     border:1px dotted #999;    
 }
+
+ul.setting_list{
+    
+}
+ul.setting_list li{
+    padding: 0.5em 0;
+}
+ul.setting_list li label{
+    padding: 0.5em;
+}
+ul.setting_list li label:hover{
+    background-color: #f9f9f9;
+}
+ul.setting_list li input{
+    margin-right: 0.5em;
+}
+ul.setting_list ul{
+    display: inline;
+    margin-left: 0.5em;
+}
+ul.setting_list ul li{
+    display: inline;
+    margin-right: 1.5em;
+}
+table.setting_table{
+    
+}
+table.setting_table th,
+table.setting_table td{
+    text-align: left;
+    vertical-align: top;
+    padding: 0.5em;
+}
+table.setting_table th{
+    font-weight: bold;
+    padding-left: 0;
+}
+table.setting_table th span{
+    padding: 0.5em 0;
+    display: block;
+}
+table.setting_table td{
+    
+}
+table.setting_table td ul.setting_list{
+    margin: 0;
+    padding: 0;
+}
+.all_checks{
+    margin-left: 1em;
+    font-size: 0.7em !important;
+    color: #666;
+}
+.all_checks a{
+    margin:0 0.2em;
+    font-weight: normal;
+}
