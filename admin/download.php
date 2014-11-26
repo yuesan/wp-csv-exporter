@@ -5,8 +5,8 @@ if ( isset( $_POST['post_type'] ) ) {
 	check_admin_referer( 'csv_export' );
 
 	$post_type = get_post_type_object( $_POST['post_type'] );
-	$posts_value = $_POST['posts_value'];
-	$post_status = $_POST['post_status'];
+	$posts_value = esc_htmls( $_POST['posts_value'] );
+	$post_status = esc_htmls( $_POST['post_status'] );
 	$limit = esc_html( $_POST['limit'] );
 	$post_date_from = $_POST['post_date_from'];
 	$post_date_to = $_POST['post_date_to'];
@@ -135,4 +135,12 @@ EOL;
 	fclose( $fp );
 	unlink( $filepath );
 
+}
+
+function esc_htmls($str){
+    if(is_array($str)){
+        return array_map("esc_html",$str);
+    }else{
+        return esc_html($str);
+    }
 }

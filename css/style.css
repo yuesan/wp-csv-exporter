@@ -37,13 +37,14 @@ h4.taxonomy_title{
 }
 
 ul.setting_list{
-    
+
 }
 ul.setting_list li{
     padding: 0.5em 0;
 }
 ul.setting_list li label{
     padding: 0.5em;
+    white-space: nowrap;
 }
 ul.setting_list li label:hover{
     background-color: #f9f9f9;
@@ -52,21 +53,25 @@ ul.setting_list li input{
     margin-right: 0.5em;
 }
 ul.setting_list ul{
-    display: inline;
-    margin-left: 0.5em;
+    /*display: inline;*/
+    margin-left: 1em;
 }
 ul.setting_list ul li{
     display: inline;
     margin-right: 1.5em;
 }
 table.setting_table{
-    
+
 }
 table.setting_table th,
 table.setting_table td{
     text-align: left;
-    vertical-align: top;
+    vertical-align: middle;
     padding: 0.5em;
+}
+table.setting_table tr.vt th,
+table.setting_table tr.vt td{
+    vertical-align: top;
 }
 table.setting_table th{
     font-weight: bold;
@@ -77,7 +82,10 @@ table.setting_table th span{
     display: block;
 }
 table.setting_table td{
-    
+
+}
+table.setting_table td input{
+    vertical-align: middle;
 }
 table.setting_table td ul.setting_list{
     margin: 0;

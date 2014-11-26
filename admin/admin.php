@@ -23,7 +23,6 @@ unset(
 	$post_taxonomies['post_format']
 );
 ?>
-<div class="wrap">
 <script type="text/javascript">
 jQuery(function($){
 
@@ -91,7 +90,9 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 });
 </script>
 
+<div class="wrap">
 <h2>WP CSV Exporter</h2>
+<p>CSVでエクスポートする項目を設定してください。</p>
 
 <ul class="plugin_tab">
 <?php foreach ( $post_types as $post_type ):?>
@@ -106,25 +107,26 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 <div class="tool-box">
 <h3>設定</h3>
 <ul class="setting_list">
-<li><label><input type="radio" name="post_id" value="post_id" checked="checked" required>*投稿ID</label></li>
-<li><label><input type="radio" name="post_type" value="<?php echo esc_attr( $post_type->name ) ?>" checked="checked" required>*投稿タイプ</label></li>
-<li><label><input type="checkbox" name="posts_value[]" value="post_name" checked="checked">スラッグ</label></li>
-<li><label><input type="checkbox" name="posts_value[]" value="post_title" checked="checked">タイトル</label></li>
-<li><label><input type="checkbox" name="posts_value[]" value="post_content" checked="checked">本文</label></li>
-<li>ステータス
-<ul>
-<li><label><input type="checkbox" name="post_status[]" value="publish" class="post_status" checked="checked">公開済み</label></li>
-<li><label><input type="checkbox" name="post_status[]" value="pending" class="post_status" >レビュー待ち</label></li>
-<li><label><input type="checkbox" name="post_status[]" value="draft" class="post_status" >下書き</label></li>
-<li><label><input type="checkbox" name="post_status[]" value="future" class="post_status" >スケジュール済み</label></li>
-<li><label><input type="checkbox" name="post_status[]" value="private" class="post_status" >非公開</label></li>
-<li><label><input type="checkbox" name="post_status[]" value="trash" class="post_status" >ゴミ箱入り</label></li>
-<li><label><input type="checkbox" name="post_status[]" value="inherit" class="post_status" >inherit</label></li>
-</ul>
-<li><label><input type="checkbox" name="posts_value[]" value="post_author">投稿者</label></li>
-<li><label><input type="checkbox" name="posts_value[]" value="post_date">公開日時</label></li>
-<li><label><input type="checkbox" name="posts_value[]" value="post_modified">更新日時</label></li>
-<li><label><input type="checkbox" name="post_tags" value="post_tags">タグ</label></li>
+    <li><label><input type="radio" name="post_id" value="post_id" checked="checked" required>*投稿ID</label></li>
+    <li><label><input type="radio" name="post_type" value="<?php echo esc_attr( $post_type->name ) ?>" checked="checked" required>*投稿タイプ</label></li>
+    <li><label><input type="checkbox" name="posts_value[]" value="post_name" checked="checked">スラッグ</label></li>
+    <li><label><input type="checkbox" name="posts_value[]" value="post_title" checked="checked">タイトル</label></li>
+    <li><label><input type="checkbox" name="posts_value[]" value="post_content" checked="checked">本文</label></li>
+    <li>ステータス
+    <ul>
+        <li><label><input type="checkbox" name="post_status[]" value="publish" class="post_status" checked="checked">公開済み</label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="pending" class="post_status" >レビュー待ち</label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="draft" class="post_status" >下書き</label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="future" class="post_status" >スケジュール済み</label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="private" class="post_status" >非公開</label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="trash" class="post_status" >ゴミ箱入り</label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="inherit" class="post_status" >inherit</label></li>
+    </ul>
+    </li>
+    <li><label><input type="checkbox" name="posts_value[]" value="post_author">投稿者</label></li>
+    <li><label><input type="checkbox" name="posts_value[]" value="post_date">公開日時</label></li>
+    <li><label><input type="checkbox" name="posts_value[]" value="post_modified">更新日時</label></li>
+    <li><label><input type="checkbox" name="post_tags" value="post_tags">タグ</label></li>
 </ul>
 </div>
 
@@ -196,27 +198,27 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 <tbody>
 <tr>
 <th>記事数</th>
-<td><input type="text" name="limit" class="limit regular-text code" value="0">※0の場合はすべてダウンロード</td>
+<td><input type="text" name="limit" class="limit" value="0"> ※0の場合はすべてダウンロード</td>
 </tr>
 <tr>
-    <th>"公開日"期間指定</th>
+    <th>"公開日"の期間指定</th>
     <td id="post_date-datepicker-wrap">
+    <label for="post_date-datepicker-from">From</label>
     <input type="text" id="post_date-datepicker-from" name="post_date_from"/>
-    <label for="post_date-datepicker-from">から</label>
+    <label for="post_date-datepicker-to">To</label>
     <input type="text" id="post_date-datepicker-to" name="post_date_to"/>
-    <label for="post_date-datepicker-to">まで</label>
     </td>
 </tr>
 <tr>
-    <th>"更新日"期間指定</th>
+    <th>"更新日"の期間指定</th>
     <td id="post_modified-datepicker-wrap">
+    <label for="post_modified-datepicker-from">From</label>
     <input type="text" id="post_modified-datepicker-from" name="post_modified_from"/>
-    <label for="post_modified-datepicker-from">から</label>
+    <label for="post_modified-datepicker-to">To</label>
     <input type="text" id="post_modified-datepicker-to" name="post_modified_to"/>
-    <label for="post_modified-datepicker-to">まで</label>
     </td>
 </tr>
-<tr>
+<tr class="vt">
     <th><span>文字コード</span></th>
     <td>
 <ul class="setting_list">

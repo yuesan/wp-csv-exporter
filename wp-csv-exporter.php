@@ -83,6 +83,17 @@ EOL;
 	}
 
 	/**
+	 * esc_htmlの配列対応
+	 */
+	function esc_htmls($str){
+	    if(is_array($str)){
+	        return array_map("esc_html",$str);
+	    }else{
+	        return esc_html($str);
+	    }
+	}
+
+	/**
 	 * プラグインが有効化されたときに実行
 	 */
 	function activationHook() {
