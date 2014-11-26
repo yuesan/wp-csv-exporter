@@ -22,6 +22,7 @@ class WP_CSV_Exporter {
 	public function __construct() {
 
 		// 管理メニューに追加するフック
+		// add_action( 'admin_menu', array( $this, 'admin_menu', ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu', ) );
 
 		// css, js
@@ -35,18 +36,11 @@ class WP_CSV_Exporter {
 
 	// 上のフックに対するaction関数
 	function admin_menu() {
-		add_menu_page( 'CSVエクスポート', 'CSVエクスポート', 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
+		add_submenu_page( 'tools.php', 'CSVエクスポート', 'CSVエクスポート', 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ));
 	}
 
 	function show_options_page() {
 		require_once WCE_PLUGIN_DIR . '/admin/admin.php';
-	}
-
-	/**
-	 * ダウンロードの実行
-	 */
-	function download_csv( $filename ) {
-
 	}
 
 	/**
@@ -63,11 +57,6 @@ WHERE $wpdb->posts.post_type = '{$type}'
 AND $wpdb->postmeta.meta_key NOT LIKE '\_%'
 EOL;
 		return $wpdb->get_results( $query, ARRAY_A );
-	}
-
-
-	public function get_term_slug( $term ) {
-		return $term->slug;
 	}
 
 	/**
@@ -89,7 +78,7 @@ EOL;
 					"jquery",
 				) );
 
-			wp_enqueue_script( "jquery-ui", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.js');
+			wp_enqueue_script( "jquery-ui", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.js' );
 		}
 	}
 
@@ -106,9 +95,7 @@ EOL;
 	 * 無効化ときに実行
 	 */
 	function deactivationHook() {
-
 		// delete_option( 'aac_options' );
-
 	}
 
 	/**
