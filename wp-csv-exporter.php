@@ -21,8 +21,9 @@ class WP_CSV_Exporter {
 
 	public function __construct() {
 
+		add_action( 'init', array( $this, 'init', ) );
+
 		// 管理メニューに追加するフック
-		// add_action( 'admin_menu', array( $this, 'admin_menu', ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu', ) );
 
 		// css, js
@@ -34,9 +35,13 @@ class WP_CSV_Exporter {
 		register_deactivation_hook( __FILE__, array( $this, 'deactivationHook', ) );
 	}
 
+	function init() {
+
+	}
+
 	// 上のフックに対するaction関数
 	function admin_menu() {
-		add_submenu_page( 'tools.php', 'CSVエクスポート', 'CSVエクスポート', 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ));
+		add_submenu_page( 'tools.php', 'CSVエクスポート', 'CSVエクスポート', 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
 	}
 
 	function show_options_page() {
@@ -48,15 +53,16 @@ class WP_CSV_Exporter {
 	 */
 	function get_custom_field_list( $type ) {
 		global $wpdb;
+		$value_parameter = esc_html($type);
 		$query = <<< EOL
 SELECT DISTINCT meta_key
 FROM $wpdb->postmeta
 LEFT JOIN $wpdb->posts
         ON $wpdb->posts.id = $wpdb->postmeta.post_id
-WHERE $wpdb->posts.post_type = '{$type}'
+WHERE $wpdb->posts.post_type = '%s'
 AND $wpdb->postmeta.meta_key NOT LIKE '\_%'
 EOL;
-		return $wpdb->get_results( $query, ARRAY_A );
+		return $wpdb->get_results( $wpdb->prepare($query, $value_parameter), ARRAY_A );
 	}
 
 	/**
@@ -85,12 +91,12 @@ EOL;
 	/**
 	 * esc_htmlの配列対応
 	 */
-	function esc_htmls($str){
-	    if(is_array($str)){
-	        return array_map("esc_html",$str);
-	    }else{
-	        return esc_html($str);
-	    }
+	function esc_htmls( $str ) {
+		if ( is_array( $str ) ) {
+			return array_map( "esc_html", $str );
+		}else {
+			return esc_html( $str );
+		}
 	}
 
 	/**

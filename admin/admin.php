@@ -1,4 +1,7 @@
 <?php
+//ダウンロードフォルダ
+$filename = WCE_PLUGIN_DIR . '/download/';
+
 //投稿タイプを取得
 $post_types = get_post_types( array(), "objects" );
 
@@ -81,7 +84,7 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 	}
 
 	//件数
-	if(!$('input.limit').val().match(/^[0-9]+$/)){
+	if(!$('#form_<?php echo esc_attr( $post_type->name ) ?> input.limit').val().match(/^[0-9]+$/)){
 		alert("記事数は数値のみです");
 		return false;
 	}
@@ -94,6 +97,15 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 <h2>WP CSV Exporter</h2>
 <p>CSVでエクスポートする項目を設定してください。</p>
 
+<?php if ( !is_writable( $filename ) ) : ?>
+<div class="error">
+    <p>
+        以下のディクレトリに書き込みができるようにパーミッションを変更してください。<br>
+        <strong><?php echo $filename; ?></strong>
+    </p>
+</div>
+<?php endif; ?>
+
 <ul class="plugin_tab">
 <?php foreach ( $post_types as $post_type ):?>
 <li class="plugin_tab-<?php echo $post_type->name;?>"><?php echo $post_type->labels->name;?></li>
@@ -102,8 +114,9 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 
 <div class="plugin_contents">
 <?php foreach ( $post_types as $post_type ):?><div class="plugin_content">
-<form action="<?php echo WCE_PLUGIN_URL .'/admin/' ?>download.php" method="post" id="form_<?php echo esc_attr( $post_type->name ) ?>" target="_blank">
-<?php echo wp_nonce_field( 'csv_export' );?>
+<form action="<?php echo WCE_PLUGIN_URL .'/admin/download.php'; ?>" method="post" id="form_<?php echo esc_attr( $post_type->name ) ?>" target="_blank">
+<?php wp_nonce_field( 'csv_exporter' );?>
+
 <div class="tool-box">
 <h3>設定</h3>
 <ul class="setting_list">
@@ -232,7 +245,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 
 </div>
 
-<p class="submit"><input type="submit" id="post_csv" class="button-primary" value="エクスポート" /></p>
+<p class="submit"><input type="submit" id="post_csv" class="button-primary" value="エクスポート" <?php if ( !is_writable( $filename ) ) : ?>disabled<?php endif; ?> /></p>
 </form>
 </div>
 <?php endforeach;?>
