@@ -1,17 +1,18 @@
 <?php
 require_once dirname( __FILE__ ) . '/../../../../wp-load.php';
+require_once './functions.php';
 $errors = '';
-if ( 
-    isset( $_POST['post_type'] ) &&
-    is_user_logged_in() &&
-    isset($_POST['_wpnonce']) &&
-    wp_verify_nonce($_POST['_wpnonce'], 'csv_exporter')
-    ) {
+if (
+	isset( $_POST['post_type'] ) &&
+	is_user_logged_in() &&
+	isset( $_POST['_wpnonce'] ) &&
+	wp_verify_nonce( $_POST['_wpnonce'], 'csv_exporter' )
+) {
 	check_admin_referer( 'csv_exporter' );
-	
+
 	global $wpdb;
 	$post_type = get_post_type_object( $_POST['post_type'] );
-	$posts_value = esc_htmls( $_POST['posts_value'] );
+	$posts_values = esc_htmls( $_POST['posts_values'] );
 	$post_status = esc_htmls( $_POST['post_status'] );
 	$limit = esc_html( $_POST['limit'] );
 	$post_date_from = esc_html( $_POST['post_date_from'] );
@@ -24,12 +25,12 @@ if (
 	$query = "";
 	//プレースホルダーに代入する値
 	$value_parameter = array();
-	$value_parameter[] = $_POST['post_id'];
 
 	// wp_postsテーブルから指定したpost_typeの公開記事を取得
 	$query_select = 'ID as %s, post_type, post_status';
-	if ( isset( $posts_value ) ) {
-		foreach ( $posts_value as $key => $value ) {
+	$value_parameter[] = $_POST['post_id'];
+	if ( isset( $posts_values ) ) {
+		foreach ( $posts_values as $key => $value ) {
 			$query_select .= ', %s';
 			$value_parameter[] = $value;
 		}
@@ -73,7 +74,7 @@ if (
 	}
 
 	//DBから取得
-	$prepare = $wpdb->prepare($query, $value_parameter);
+	$prepare = $wpdb->prepare( $query, $value_parameter );
 	$results = $wpdb->get_results( $prepare, ARRAY_A );
 
 	// カテゴリとタグのslugを追加
@@ -85,14 +86,13 @@ if (
 			if ( !empty( $_POST['post_tags'] ) ) {
 				$tags = get_the_tags( $result['post_id'], esc_html( $_POST['post_tags'] ) );
 				if ( is_array( $tags ) ) {
-					$term_value = urldecode( implode( ',', array_map(
+					$post_tags = urldecode( implode( ',', array_map(
 								function ( $tag ) {
 									return $tag->slug;
 								},
 								$tags
 							) ) );
-					// TODO: Really Simple CSV Importer対応のためpost_を接頭に?
-					$customs_array += array( $_POST['post_tags'] => $term_value );
+					$customs_array += array( $_POST['post_tags'] => $post_tags );
 				}
 			}
 
@@ -108,7 +108,7 @@ if (
 									$terms
 								) ) );
 						// TODO: Really Simple CSV Importer対応のためtax_を接頭に。カテゴリ時は除く
-						// $head_name = 'tax_' . $taxonomy; 
+						// $head_name = 'tax_' . $taxonomy;
 						$customs_array += array( $head_name => $term_value );
 					}
 				}
@@ -158,12 +158,4 @@ if (
 	fclose( $fp );
 	unlink( $filepath );
 
-}
-
-function esc_htmls( $str ) {
-	if ( is_array( $str ) ) {
-		return array_map( "esc_html", $str );
-	}else {
-		return esc_html( $str );
-	}
 }

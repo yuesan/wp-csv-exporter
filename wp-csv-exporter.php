@@ -20,9 +20,8 @@ class WP_CSV_Exporter {
 	private $textdomain = 'wce';
 
 	public function __construct() {
-
-		add_action( 'init', array( $this, 'init', ) );
-
+		$this->init();
+		
 		// 管理メニューに追加するフック
 		add_action( 'admin_menu', array( $this, 'admin_menu', ) );
 
@@ -35,13 +34,15 @@ class WP_CSV_Exporter {
 		register_deactivation_hook( __FILE__, array( $this, 'deactivationHook', ) );
 	}
 
-	function init() {
 
-	}
+    function init() {
+        //他言語化
+        load_plugin_textdomain( $this->textdomain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
+    }
 
 	// 上のフックに対するaction関数
 	function admin_menu() {
-		add_submenu_page( 'tools.php', 'CSVエクスポート', 'CSVエクスポート', 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
+		add_submenu_page( 'tools.php', $this->_('CSV Export', 'CSVエクスポート'), $this->_('CSV Export', 'CSVエクスポート'), 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
 	}
 
 	function show_options_page() {
@@ -89,30 +90,15 @@ EOL;
 	}
 
 	/**
-	 * esc_htmlの配列対応
-	 */
-	function esc_htmls( $str ) {
-		if ( is_array( $str ) ) {
-			return array_map( "esc_html", $str );
-		}else {
-			return esc_html( $str );
-		}
-	}
-
-	/**
 	 * プラグインが有効化されたときに実行
 	 */
 	function activationHook() {
-		if ( !get_option( 'aac_options' ) ) {
-			update_option( 'aac_options', $this->aac_defalt_options );
-		}
 	}
 
 	/**
 	 * 無効化ときに実行
 	 */
 	function deactivationHook() {
-		// delete_option( 'aac_options' );
 	}
 
 	/**

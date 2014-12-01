@@ -79,13 +79,13 @@ jQuery(function($){
 $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 	var total_check_num = $("#form_<?php echo esc_attr( $post_type->name ) ?> input.post_status:checked").length;
 	if(total_check_num == 0){
-      	alert("ステータスは必須項目です");
+      	alert('<?php $this->e('"Status" is a required field.', '"ステータス"は必須項目です') ?>');
 		return false;
 	}
 
 	//件数
 	if(!$('#form_<?php echo esc_attr( $post_type->name ) ?> input.limit').val().match(/^[0-9]+$/)){
-		alert("記事数は数値のみです");
+		alert("<?php $this->e('The number of articles must be entered in numerical format.', '記事数は数値のみが入力可能です。') ?>");
 		return false;
 	}
 });
@@ -94,13 +94,15 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 </script>
 
 <div class="wrap">
-<h2>WP CSV Exporter</h2>
-<p>CSVでエクスポートする項目を設定してください。</p>
+<h2><?php $this->e('WP CSV Exporter', 'WP CSV Exporter') ?></h2>
+<p>
+<?php $this->e('Please set the fields you would like to export with CSV.','CSVでエクスポートする項目を設定してください。') ?>
+</p>
 
 <?php if ( !is_writable( $filename ) ) : ?>
 <div class="error">
     <p>
-        以下のディクレトリに書き込みができるようにパーミッションを変更してください。<br>
+        <?php $this->e('Please adjust your permissions so that you are able to edit the below directory.', '以下のディクレトリに書き込みができるようにパーミッションを変更してください。') ?><br>
         <strong><?php echo $filename; ?></strong>
     </p>
 </div>
@@ -118,39 +120,39 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 <?php wp_nonce_field( 'csv_exporter' );?>
 
 <div class="tool-box">
-<h3>設定</h3>
+<h3><?php $this->e('Settings','設定') ?></h3>
 <ul class="setting_list">
-    <li><label><input type="radio" name="post_id" value="post_id" checked="checked" required>*投稿ID</label></li>
-    <li><label><input type="radio" name="post_type" value="<?php echo esc_attr( $post_type->name ) ?>" checked="checked" required>*投稿タイプ</label></li>
-    <li><label><input type="checkbox" name="posts_value[]" value="post_name" checked="checked">スラッグ</label></li>
-    <li><label><input type="checkbox" name="posts_value[]" value="post_title" checked="checked">タイトル</label></li>
-    <li><label><input type="checkbox" name="posts_value[]" value="post_content" checked="checked">本文</label></li>
-    <li>ステータス
+    <li><label><input type="radio" name="post_id" value="post_id" checked="checked" required>*<?php $this->e('Post ID','投稿ID') ?></label></li>
+    <li><label><input type="radio" name="post_type" value="<?php echo esc_attr( $post_type->name ) ?>" checked="checked" required>*<?php $this->e('Post Type','投稿タイプ') ?></label></li>
+    <li><label><input type="checkbox" name="posts_values[]" value="post_name" checked="checked"><?php $this->e('Slug','スラッグ') ?></label></li>
+    <li><label><input type="checkbox" name="posts_values[]" value="post_title" checked="checked"><?php $this->e('Post Title','記事タイトル') ?></label></li>
+    <li><label><input type="checkbox" name="posts_values[]" value="post_content" checked="checked"><?php $this->e('Post Content','記事本文') ?></label></li>
+    <li><?php $this->e('Status','ステータス') ?>
     <ul>
-        <li><label><input type="checkbox" name="post_status[]" value="publish" class="post_status" checked="checked">公開済み</label></li>
-        <li><label><input type="checkbox" name="post_status[]" value="pending" class="post_status" >レビュー待ち</label></li>
-        <li><label><input type="checkbox" name="post_status[]" value="draft" class="post_status" >下書き</label></li>
-        <li><label><input type="checkbox" name="post_status[]" value="future" class="post_status" >スケジュール済み</label></li>
-        <li><label><input type="checkbox" name="post_status[]" value="private" class="post_status" >非公開</label></li>
-        <li><label><input type="checkbox" name="post_status[]" value="trash" class="post_status" >ゴミ箱入り</label></li>
-        <li><label><input type="checkbox" name="post_status[]" value="inherit" class="post_status" >inherit</label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="publish" class="post_status" checked="checked"><?php $this->e('Publish','公開済み（publish）') ?></label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="pending" class="post_status" ><?php $this->e('Pending','レビュー待ち（pending）') ?></label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="draft" class="post_status" ><?php $this->e('Draft','下書き（draft）') ?></label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="future" class="post_status" ><?php $this->e('Future','スケジュール済み（future）') ?></label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="private" class="post_status" ><?php $this->e('Private','非公開（private）') ?></label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="trash" class="post_status" ><?php $this->e('Trash','ゴミ箱入り（trash）') ?></label></li>
+        <li><label><input type="checkbox" name="post_status[]" value="inherit" class="post_status" ><?php $this->e('Inherit','inherit') ?></label></li>
     </ul>
     </li>
-    <li><label><input type="checkbox" name="posts_value[]" value="post_author">投稿者</label></li>
-    <li><label><input type="checkbox" name="posts_value[]" value="post_date">公開日時</label></li>
-    <li><label><input type="checkbox" name="posts_value[]" value="post_modified">更新日時</label></li>
-    <li><label><input type="checkbox" name="post_tags" value="post_tags">タグ</label></li>
+    <li><label><input type="checkbox" name="posts_values[]" value="post_author"><?php $this->e('Author','投稿者') ?></label></li>
+    <li><label><input type="checkbox" name="posts_values[]" value="post_date"><?php $this->e('Post Date','公開日時') ?></label></li>
+    <li><label><input type="checkbox" name="posts_values[]" value="post_modified"><?php $this->e('Date Modified','変更日時') ?></label></li>
+    <li><label><input type="checkbox" name="post_tags" value="post_tags"><?php $this->e('Tags','タグ') ?></label></li>
 </ul>
 </div>
 
 <hr>
 
 <div class="tool-box">
-<h3><?php echo $post_type->labels->name ?>のタクソノミー
+<h3><?php $this->e('Taxonomies', 'タクソノミー') ?>
 <span class="all_checks">
 [
-<a href="javascript:void(0);" class="all_checked" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_taxonomy">全選択</a>
-<a href="javascript:void(0);" class="all_checkout" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_taxonomy">全解除</a>
+<a href="javascript:void(0);" class="all_checked" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_taxonomy"><?php $this->e('Select all', '全選択') ?></a>
+<a href="javascript:void(0);" class="all_checkout" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_taxonomy"><?php $this->e('Unselect all', '全解除') ?></a>
 ]
 </span>
 </h3>
@@ -171,7 +173,7 @@ endforeach;
 
 if ( $num == 0 ):
 ?>
-<li>登録されているカスタムタクソノミーはありません。</li>
+<li><?php $this->e('There are no registered custom taxonomies.','登録されているカスタムタクソノミーはありません。') ?></li>
 <?php endif; ?>
 </ul>
 </div>
@@ -179,11 +181,11 @@ if ( $num == 0 ):
 <hr>
 
 <div class="tool-box">
-<h3><?php echo $post_type->labels->name ?>のカスタムフィールド
+<h3><?php $this->e('Custom Fields', 'カスタムフィールド') ?>
 <span class="all_checks">
 [
-<a href="javascript:void(0);" class="all_checked" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_checkbox">全選択</a>
-<a href="javascript:void(0);" class="all_checkout" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_checkbox">全解除</a>
+<a href="javascript:void(0);" class="all_checked" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_checkbox"><?php $this->e('Select all', '全選択') ?></a>
+<a href="javascript:void(0);" class="all_checkout" data-target="#form_<?php echo esc_attr( $post_type->name ) ?> .cf_checkbox"><?php $this->e('Unselect all', '全解除') ?></a>
 ]
 </span>
 </h3>
@@ -198,7 +200,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 <li><label><input type="checkbox" name="cf_fields[]" class="cf_checkbox" checked="checked" value="<?php echo $value['meta_key']; ?>"> <?php echo $value['meta_key']; ?></label></li>
 <?php endforeach;?>
 <?php else: ?>
-<li>登録されているカスタムフィールドはありません。</li>
+<li><?php $this->e('There are not registered custom fields.', '登録されているカスタムフィールドはありません。') ?></li>
 </ul>
 <?php endif; ?>
 </div>
@@ -206,15 +208,15 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 <hr>
 
 <div class="tool-box">
-<h3>その他</h3>
+<h3><?php $this->e('Others', 'その他') ?></h3>
 <table class="setting_table">
 <tbody>
 <tr>
-<th>記事数</th>
-<td><input type="text" name="limit" class="limit" value="0"> ※0の場合はすべてダウンロード</td>
+<th><?php $this->e('Number of articles to download.', 'ダウンロードする記事件数') ?></th>
+<td><input type="text" name="limit" class="limit" value="0"> <?php $this->e('*All downloaded if "0" selected.', '※0の場合はすべてダウンロード') ?></td>
 </tr>
 <tr>
-    <th>"公開日"の期間指定</th>
+    <th><?php $this->e('Select period to display.', '公開日の期間指定') ?></th>
     <td id="post_date-datepicker-wrap">
     <label for="post_date-datepicker-from">From</label>
     <input type="text" id="post_date-datepicker-from" name="post_date_from"/>
@@ -223,7 +225,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
     </td>
 </tr>
 <tr>
-    <th>"更新日"の期間指定</th>
+    <th><?php $this->e('Select date modified.', '変更日の期間指定') ?></th>
     <td id="post_modified-datepicker-wrap">
     <label for="post_modified-datepicker-from">From</label>
     <input type="text" id="post_modified-datepicker-from" name="post_modified_from"/>
@@ -232,7 +234,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
     </td>
 </tr>
 <tr class="vt">
-    <th><span>文字コード</span></th>
+    <th><span><?php $this->e('Character Code', '文字コード') ?></span></th>
     <td>
 <ul class="setting_list">
 <li><label><input type="radio" name="string_code" value="UTF-8" checked="checked"> UTF-8</label></li>
@@ -245,7 +247,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 
 </div>
 
-<p class="submit"><input type="submit" id="post_csv" class="button-primary" value="エクスポート" <?php if ( !is_writable( $filename ) ) : ?>disabled<?php endif; ?> /></p>
+<p class="submit"><input type="submit" class="button-primary" value="<?php $this->e('Export', 'エクスポート') ?> <?php echo $post_type->labels->name;?> CSV" <?php if ( !is_writable( $filename ) ) : ?>disabled<?php endif; ?> /></p>
 </form>
 </div>
 <?php endforeach;?>
