@@ -85,7 +85,7 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 
 	//件数
 	if(!$('#form_<?php echo esc_attr( $post_type->name ) ?> input.limit').val().match(/^[0-9]+$/)){
-		alert("<?php $this->e('The number of articles must be entered in numerical format.', '記事数は数値のみが入力可能です。') ?>");
+		alert('<?php $this->e('The number of articles must be entered in numerical format.', '記事数は数値のみが入力可能です。') ?>');
 		return false;
 	}
 });

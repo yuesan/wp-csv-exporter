@@ -4,13 +4,13 @@ Plugin Name: WP CSV Exporter
 Plugin URI: http://www.kigurumi.asia/imake/3603/
 Description:
 Author: Nakashima Masahiro
-Version: 1.0
+Version: 1.0.0
 Author URI: http://www.kigurumi.asia
-License: GPLv2
+License: GPLv2 or later
 Text Domain: wce
 Domain Path: /languages/
  */
-define( 'WCE_VERSION', '1.0' );
+define( 'WCE_VERSION', '1.0.0' );
 define( 'WCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCE_PLUGIN_NAME', trim( dirname( WCE_PLUGIN_BASENAME ), '/' ) );
 define( 'WCE_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
@@ -55,15 +55,16 @@ class WP_CSV_Exporter {
 	function get_custom_field_list( $type ) {
 		global $wpdb;
 		$value_parameter = esc_html($type);
+		$pattern = "\_%";
 		$query = <<< EOL
 SELECT DISTINCT meta_key
 FROM $wpdb->postmeta
-LEFT JOIN $wpdb->posts
-        ON $wpdb->posts.id = $wpdb->postmeta.post_id
+INNER JOIN $wpdb->posts
+        ON $wpdb->posts.ID = $wpdb->postmeta.post_id
 WHERE $wpdb->posts.post_type = '%s'
-AND $wpdb->postmeta.meta_key NOT LIKE '\_%'
+AND $wpdb->postmeta.meta_key NOT LIKE '%s'
 EOL;
-		return $wpdb->get_results( $wpdb->prepare($query, $value_parameter), ARRAY_A );
+		return $wpdb->get_results( $wpdb->prepare($query, array($value_parameter, $pattern) ), ARRAY_A );
 	}
 
 	/**

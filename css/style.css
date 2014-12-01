@@ -45,6 +45,7 @@ ul.setting_list li{
 ul.setting_list li label{
     padding: 0.5em;
     white-space: nowrap;
+
 }
 ul.setting_list li label:hover{
     background-color: #f9f9f9;
@@ -59,6 +60,10 @@ ul.setting_list ul{
 ul.setting_list ul li{
     display: inline;
     margin-right: 1.5em;
+    line-height: 2;
+}
+ul.setting_list ul li label{
+    
 }
 table.setting_table{
 

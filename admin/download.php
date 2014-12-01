@@ -1,4 +1,7 @@
 <?php
+// if ( !ini_get( 'display_errors' ) ) {
+// 	ini_set( 'display_errors', '1' );
+// }
 require_once dirname( __FILE__ ) . '/../../../../wp-load.php';
 require_once './functions.php';
 $errors = '';
@@ -31,8 +34,7 @@ if (
 	$value_parameter[] = $_POST['post_id'];
 	if ( isset( $posts_values ) ) {
 		foreach ( $posts_values as $key => $value ) {
-			$query_select .= ', %s';
-			$value_parameter[] = $value;
+			$query_select .= ', '.$value;
 		}
 	}
 	$query .= "SELECT ".$query_select." ";
@@ -76,7 +78,7 @@ if (
 	//DBから取得
 	$prepare = $wpdb->prepare( $query, $value_parameter );
 	$results = $wpdb->get_results( $prepare, ARRAY_A );
-
+	
 	// カテゴリとタグのslugを追加
 	$results = array_map( function ( $result ) {
 			//マージ用の配列
@@ -107,8 +109,13 @@ if (
 									},
 									$terms
 								) ) );
-						// TODO: Really Simple CSV Importer対応のためtax_を接頭に。カテゴリ時は除く
-						// $head_name = 'tax_' . $taxonomy;
+						// for "Really Simple CSV Importer"
+						if ( $taxonomy == 'category' ) {
+							$head_name = 'post_category';
+						}else {
+							//カスタムタクソノミー時
+							$head_name = 'tax_' . $taxonomy;
+						}
 						$customs_array += array( $head_name => $term_value );
 					}
 				}
@@ -141,12 +148,14 @@ if (
 	// ファイルの保存場所を設定
 	$filename = 'export-'.$post_type->name.'-'.date( "Y-m-d_H-i-s" ).'.csv';
 	$filepath = WCE_PLUGIN_DIR . '/download/'.$filename;
-	$fp = fopen( $filepath, 'w' );
+	$fp = fopen( $filepath, 'a' );
 
 	// 配列をカンマ区切りにしてファイルに書き込み
 	foreach ( $list as $fields ) {
 		//文字コード変換
-		mb_convert_variables( $string_code, 'UTF-8', $fields );
+		if ( function_exists( "mb_convert_variables" ) ) {
+			mb_convert_variables( $string_code, 'UTF-8', $fields );
+		}
 		fputcsv( $fp, $fields );
 	}
 
