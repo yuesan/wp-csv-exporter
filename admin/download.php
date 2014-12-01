@@ -1,6 +1,6 @@
 <?php
 // if ( !ini_get( 'display_errors' ) ) {
-// 	ini_set( 'display_errors', '1' );
+//  ini_set( 'display_errors', '1' );
 // }
 require_once dirname( __FILE__ ) . '/../../../../wp-load.php';
 require_once './functions.php';
@@ -78,11 +78,18 @@ if (
 	//DBから取得
 	$prepare = $wpdb->prepare( $query, $value_parameter );
 	$results = $wpdb->get_results( $prepare, ARRAY_A );
-	
+
 	// カテゴリとタグのslugを追加
 	$results = array_map( function ( $result ) {
 			//マージ用の配列
 			$customs_array = array();
+
+			//サムネイル
+			if ( !empty( $_POST['post_thumbnail'] ) ) {
+				$thumbnail_id = get_post_thumbnail_id($result['post_id']);
+				$thumbnail_url = wp_get_attachment_image_src( $thumbnail_id, true ); 
+				$customs_array += array( $_POST['post_thumbnail'] => $thumbnail_url[0] );
+			}
 
 			//タグ
 			if ( !empty( $_POST['post_tags'] ) ) {

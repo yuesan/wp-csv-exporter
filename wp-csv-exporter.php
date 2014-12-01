@@ -40,7 +40,9 @@ class WP_CSV_Exporter {
         load_plugin_textdomain( $this->textdomain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
     }
 
-	// 上のフックに対するaction関数
+	/**
+	 * メニューを表示
+	 */
 	function admin_menu() {
 		add_submenu_page( 'tools.php', $this->_('CSV Export', 'CSVエクスポート'), $this->_('CSV Export', 'CSVエクスポート'), 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
 	}

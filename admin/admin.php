@@ -127,6 +127,8 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
     <li><label><input type="checkbox" name="posts_values[]" value="post_name" checked="checked"><?php $this->e('Slug','スラッグ') ?></label></li>
     <li><label><input type="checkbox" name="posts_values[]" value="post_title" checked="checked"><?php $this->e('Post Title','記事タイトル') ?></label></li>
     <li><label><input type="checkbox" name="posts_values[]" value="post_content" checked="checked"><?php $this->e('Post Content','記事本文') ?></label></li>
+    <li><label><input type="checkbox" name="posts_values[]" value="post_excerpt"><?php $this->e('Post Excerpt','抜粋') ?></label></li>
+    <li><label><input type="checkbox" name="post_thumbnail" value="post_thumbnail"><?php $this->e('Thumbnail','アイキャッチ画像') ?></label></li>
     <li><?php $this->e('Status','ステータス') ?>
     <ul>
         <li><label><input type="checkbox" name="post_status[]" value="publish" class="post_status" checked="checked"><?php $this->e('Publish','公開済み（publish）') ?></label></li>

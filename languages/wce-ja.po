@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgstr-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-06 12:00+0900\n"
 "POT-Creation-Date: 2012-04-19 14:58+0900\n"
-"PO-Revision-Date: 2014-12-01 11:35+0900\n"
+"PO-Revision-Date: 2014-12-02 08:21+0900\n"
 "Last-Translator: Masahiro Nakashima <kanakogi@gmail.com>\n"
 "Language-Team: JAPANESE\n"
 "MIME-Version: 1.0\n"
@@ -131,3 +131,9 @@ msgstr "ステータス"
 
 msgid "WP CSV Exporter"
 msgstr "WP CSV Exporter"
+
+msgid "Post Excerpt"
+msgstr "抜粋"
+
+msgid "Thumbnail"
+msgstr "アイキャッチ画像"
