@@ -87,20 +87,23 @@ if (
 			//サムネイル
 			if ( !empty( $_POST['post_thumbnail'] ) ) {
 				$thumbnail_id = get_post_thumbnail_id($result['post_id']);
-				$thumbnail_url = wp_get_attachment_image_src( $thumbnail_id, true ); 
-				$customs_array += array( $_POST['post_thumbnail'] => $thumbnail_url[0] );
+				$thumbnail_url_array = wp_get_attachment_image_src( $thumbnail_id, true ); 
+				$thumbnail_url = apply_filters( 'wp_csv_exporter_thumbnail_url', $thumbnail_url_array[0] );
+				$customs_array += array( $_POST['post_thumbnail'] => $thumbnail_url );
 			}
 
 			//タグ
 			if ( !empty( $_POST['post_tags'] ) ) {
 				$tags = get_the_tags( $result['post_id'], esc_html( $_POST['post_tags'] ) );
 				if ( is_array( $tags ) ) {
-					$post_tags = urldecode( implode( ',', array_map(
+					$post_tags = array_map(
 								function ( $tag ) {
 									return $tag->slug;
 								},
 								$tags
-							) ) );
+							);
+					$post_tags = apply_filters( 'wp_csv_exporter_post_tags', $post_tags );
+					$post_tags = urldecode( implode( ',', $post_tags ) );
 					$customs_array += array( $_POST['post_tags'] => $post_tags );
 				}
 			}
@@ -110,20 +113,24 @@ if (
 				foreach ( $_POST['taxonomies'] as $key => $taxonomy ) {
 					$terms = get_the_terms( $result['post_id'], esc_html( $taxonomy ) );
 					if ( is_array( $terms ) ) {
-						$term_value = urldecode( implode( ',', array_map(
-									function ( $term ) {
-										return $term->slug;
-									},
-									$terms
-								) ) );
-						// for "Really Simple CSV Importer"
+						// Modify 'head name' for "Really Simple CSV Importer"
 						if ( $taxonomy == 'category' ) {
 							$head_name = 'post_category';
 						}else {
 							//カスタムタクソノミー時
 							$head_name = 'tax_' . $taxonomy;
 						}
-						$customs_array += array( $head_name => $term_value );
+						//$term_values
+						$term_values = array_map(
+									function ( $term ) {
+										return $term->slug;
+									},
+									$terms
+								);
+						//Filter
+						$term_values = apply_filters( 'wp_csv_exporter_'.$head_name , $term_values );
+						$term_values = urldecode( implode( ',', $term_values ) );
+						$customs_array += array( $head_name => $term_values );
 					}
 				}
 			}
@@ -136,16 +143,47 @@ if (
 					if ( array_search( $key, $_POST['cf_fields'] ) !== false ) {
 						//アンダーバーから始まるのは削除
 						if ( !preg_match( '/^_.*/', $key ) ) {
-							$customs_array += array( $key => $field[0] );
+							$field = apply_filters( 'wp_csv_exporter_'.$key , $field[0] );
+							$customs_array += array( $key => $field );
 						}
 					}
 				}
 			}
 
+			/**
+			 * フィルター追加
+			 */
+			//スラッグ
+			$post_name = apply_filters( 'wp_csv_exporter_post_name', $result['post_name'] );
+			$customs_array += array( 'post_name' => $post_name );
+			//タイトル
+			$post_title = apply_filters( 'wp_csv_exporter_post_title', $result['post_title'] );
+			$customs_array += array( 'post_title' => $post_title );
+			//本文
+			$post_content = apply_filters( 'wp_csv_exporter_post_content', $result['post_content'] );
+			$customs_array += array( 'post_content' => $post_content );
+			//抜粋
+			$post_excerpt = apply_filters( 'wp_csv_exporter_post_excerpt', $result['post_excerpt'] );
+			$customs_array += array( 'post_excerpt' => $post_excerpt );
+			//ステータス
+			$post_status = apply_filters( 'wp_csv_exporter_post_status', $result['post_status'] );
+			$customs_array += array( 'post_status' => $post_status );
+			//投稿者
+			$post_author = apply_filters( 'wp_csv_exporter_post_author', $result['post_author'] );
+			$customs_array += array( 'post_author' => $post_author );
+			//公開日時
+			$post_date = apply_filters( 'wp_csv_exporter_post_date', $result['post_date'] );
+			$customs_array += array( 'post_date' => $post_date );
+			//変更日時
+			$post_modified = apply_filters( 'wp_csv_exporter_post_modified', $result['post_modified'] );
+			$customs_array += array( 'post_modified' => $post_modified );
+
 			return array_merge( $result, $customs_array );
 		}
 		, $results );
-
+	
+	print_r($results);
+	die;
 	// 項目名を取得
 	$head[] = array_keys( $results[0] );
 

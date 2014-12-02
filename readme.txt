@@ -21,12 +21,43 @@ It is also possible to set the number or date range of posts to download.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. The control panel of WP CSV Exporter is in 'Tools > CSV Export'.
 
+
 == Screenshots ==
 1. `/assets/screenshot-1.png`
 2. `/assets/screenshot-2.png`
 3. `/assets/screenshot-3.png`
 4. `/assets/screenshot-4.png`
 
+
+== How to customize export post data == 
+
+wp_csv_exporter_post_name
+wp_csv_exporter_post_title
+wp_csv_exporter_post_content
+wp_csv_exporter_post_excerpt
+wp_csv_exporter_post_status
+wp_csv_exporter_post_author
+wp_csv_exporter_post_date
+wp_csv_exporter_post_modified
+wp_csv_exporter_thumbnail_url
+
+wp_csv_exporter_post_tags *array
+wp_csv_exporter_post_category *array
+wp_csv_exporter_tax_{taxonomy} *array
+wp_csv_exporter_{custom}
+
+
+= really_simple_csv_importer_save_post =
+
+This filter is applied to post data.
+
+Example:
+`
+function really_simple_csv_importer_save_post_filter( $post, $is_update ) {    
+    return $post;
+}
+add_filter( 'really_simple_csv_importer_save_post', 'really_simple_csv_importer_save_post_filter', 10, 2 );
+`
 
 == Changelog ==
 **1.0.0 - December 01, 2014**  
