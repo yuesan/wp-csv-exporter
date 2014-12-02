@@ -1,7 +1,4 @@
 <?php
-// if ( !ini_get( 'display_errors' ) ) {
-//  ini_set( 'display_errors', '1' );
-// }
 require_once dirname( __FILE__ ) . '/../../../../wp-load.php';
 require_once './functions.php';
 $errors = '';
@@ -88,7 +85,7 @@ if (
 			if ( !empty( $_POST['post_thumbnail'] ) ) {
 				$thumbnail_id = get_post_thumbnail_id($result['post_id']);
 				$thumbnail_url_array = wp_get_attachment_image_src( $thumbnail_id, true ); 
-				$thumbnail_url = apply_filters( 'wp_csv_exporter_thumbnail_url', $thumbnail_url_array[0] );
+				$thumbnail_url = apply_filters( 'wp_csv_exporter_thumbnail_url', $thumbnail_url_array[0], $result['post_id'] );
 				$customs_array += array( $_POST['post_thumbnail'] => $thumbnail_url );
 			}
 
@@ -102,7 +99,7 @@ if (
 								},
 								$tags
 							);
-					$post_tags = apply_filters( 'wp_csv_exporter_post_tags', $post_tags );
+					$post_tags = apply_filters( 'wp_csv_exporter_post_tags', $post_tags, $result['post_id'] );
 					$post_tags = urldecode( implode( ',', $post_tags ) );
 					$customs_array += array( $_POST['post_tags'] => $post_tags );
 				}
@@ -127,7 +124,7 @@ if (
 									},
 									$terms
 								);
-						$term_values = apply_filters( 'wp_csv_exporter_'.$head_name , $term_values );
+						$term_values = apply_filters( 'wp_csv_exporter_'.$head_name , $term_values, $result['post_id'] );
 						$term_values = urldecode( implode( ',', $term_values ) );
 						$customs_array += array( $head_name => $term_values );
 					}
@@ -142,7 +139,7 @@ if (
 					if ( array_search( $key, $_POST['cf_fields'] ) !== false ) {
 						//アンダーバーから始まるのは削除
 						if ( !preg_match( '/^_.*/', $key ) ) {
-							$field = apply_filters( 'wp_csv_exporter_'.$key , $field[0] );
+							$field = apply_filters( 'wp_csv_exporter_'.$key , $field[0], $result['post_id'] );
 							$customs_array += array( $key => $field );
 						}
 					}
@@ -153,34 +150,34 @@ if (
 			 * フィルター追加
 			 */
 			//スラッグ
-			$post_name = apply_filters( 'wp_csv_exporter_post_name', $result['post_name'] );
+			$post_name = apply_filters( 'wp_csv_exporter_post_name', $result['post_name'], $result['post_id'] );
 			$customs_array += array( 'post_name' => $post_name );
 			//タイトル
-			$post_title = apply_filters( 'wp_csv_exporter_post_title', $result['post_title'] );
+			$post_title = apply_filters( 'wp_csv_exporter_post_title', $result['post_title'], $result['post_id'] );
 			$customs_array += array( 'post_title' => $post_title );
 			//本文
-			$post_content = apply_filters( 'wp_csv_exporter_post_content', $result['post_content'] );
+			$post_content = apply_filters( 'wp_csv_exporter_post_content', $result['post_content'], $result['post_id'] );
 			$customs_array += array( 'post_content' => $post_content );
 			//抜粋
-			$post_excerpt = apply_filters( 'wp_csv_exporter_post_excerpt', $result['post_excerpt'] );
+			$post_excerpt = apply_filters( 'wp_csv_exporter_post_excerpt', $result['post_excerpt'], $result['post_id'] );
 			$customs_array += array( 'post_excerpt' => $post_excerpt );
 			//ステータス
-			$post_status = apply_filters( 'wp_csv_exporter_post_status', $result['post_status'] );
+			$post_status = apply_filters( 'wp_csv_exporter_post_status', $result['post_status'], $result['post_id'] );
 			$customs_array += array( 'post_status' => $post_status );
 			//投稿者
-			$post_author = apply_filters( 'wp_csv_exporter_post_author', $result['post_author'] );
+			$post_author = apply_filters( 'wp_csv_exporter_post_author', $result['post_author'], $result['post_id'] );
 			$customs_array += array( 'post_author' => $post_author );
 			//公開日時
-			$post_date = apply_filters( 'wp_csv_exporter_post_date', $result['post_date'] );
+			$post_date = apply_filters( 'wp_csv_exporter_post_date', $result['post_date'], $result['post_id'] );
 			$customs_array += array( 'post_date' => $post_date );
 			//変更日時
-			$post_modified = apply_filters( 'wp_csv_exporter_post_modified', $result['post_modified'] );
+			$post_modified = apply_filters( 'wp_csv_exporter_post_modified', $result['post_modified'], $result['post_id'] );
 			$customs_array += array( 'post_modified' => $post_modified );
 
 			return array_merge( $result, $customs_array );
 		}
 		, $results );
-	
+
 	// 項目名を取得
 	$head[] = array_keys( $results[0] );
 

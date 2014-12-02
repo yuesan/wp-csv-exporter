@@ -31,33 +31,174 @@ It is also possible to set the number or date range of posts to download.
 
 == How to customize export post data == 
 
-wp_csv_exporter_post_name
-wp_csv_exporter_post_title
-wp_csv_exporter_post_content
-wp_csv_exporter_post_excerpt
-wp_csv_exporter_post_status
-wp_csv_exporter_post_author
-wp_csv_exporter_post_date
-wp_csv_exporter_post_modified
-wp_csv_exporter_thumbnail_url
+This plugin has below filters.
 
-wp_csv_exporter_post_tags *array
-wp_csv_exporter_post_category *array
-wp_csv_exporter_tax_{taxonomy} *array
-wp_csv_exporter_{custom}
+* wp_csv_exporter_post_name
+* wp_csv_exporter_post_title
+* wp_csv_exporter_post_content
+* wp_csv_exporter_post_excerpt
+* wp_csv_exporter_post_status
+* wp_csv_exporter_post_author
+* wp_csv_exporter_post_date
+* wp_csv_exporter_post_modified
+* wp_csv_exporter_thumbnail_url
+* wp_csv_exporter_post_tags
+* wp_csv_exporter_post_category
+* wp_csv_exporter_tax_{taxonomy}
+* wp_csv_exporter_{custom_field}
 
 
-= really_simple_csv_importer_save_post =
+= wp_csv_exporter_post_name =
 
-This filter is applied to post data.
+Parameters:
+* `$post_name` - (required) post slug
+* `$post_id` - (integer) post id
 
 Example:
 `
-function really_simple_csv_importer_save_post_filter( $post, $is_update ) {    
-    return $post;
+add_filter( 'wp_csv_exporter_post_name', 'wp_csv_exporter_post_name_filter', 10, 3 );
+function wp_csv_exporter_post_name_filter( $post_name, $post_id  ) {
+    return $post_name;
 }
-add_filter( 'really_simple_csv_importer_save_post', 'really_simple_csv_importer_save_post_filter', 10, 2 );
 `
+
+
+= wp_csv_exporter_post_title =
+
+Parameters:
+* `$post_title` - (required) post title
+* `$post_id` - (integer) post id
+
+Example:
+`
+add_filter( 'wp_csv_exporter_post_title', 'wp_csv_exporter_post_title_filter', 10, 3 );
+function wp_csv_exporter_post_title_filter( $post_title, $post_id  ) {
+    $post_title = $post_id . ':' . $post_title;
+    return $post_title;
+}
+`
+
+
+= wp_csv_exporter_post_content =
+
+Parameters:
+* `$post_content` - (required) post content
+* `$post_id` - (integer) post id
+
+
+= wp_csv_exporter_post_excerpt =
+
+Parameters:
+* `$post_excerpt` - (required) post excerpt
+* `$post_id` - (integer) post id
+
+
+= wp_csv_exporter_post_status =
+
+Parameters:
+* `$post_status` - (required) post status
+* `$post_id` - (integer) post id
+
+
+= wp_csv_exporter_post_author =
+
+Parameters:
+* `$post_author` - (required) post author
+* `$post_id` - (integer) post id
+
+
+= wp_csv_exporter_post_date =
+
+Parameters:
+* `$post_date` - (required) post date
+* `$post_id` - (integer) post id
+
+
+= wp_csv_exporter_post_modified =
+
+Parameters:
+* `$post_modified` - (required) post modified date
+* `$post_id` - (integer) post id
+
+
+= wp_csv_exporter_post_thumbnail_url =
+
+Parameters:
+* `$post_thumbnail_url` - (required) post thumbnail_url
+* `$post_id` - (integer) post id
+
+
+= wp_csv_exporter_post_tags =
+
+Parameters:
+* `$post_tags` - (array)(required) post tags
+* `$post_id` - (integer) post id
+
+Example:
+`
+add_filter( 'wp_csv_exporter_post_tags', 'wp_csv_exporter_post_tags_filter', 10, 3 );
+function wp_csv_exporter_post_tags_filter( $post_tags, $post_id  ) {
+    $_post_tags = array();
+    foreach ( $post_tags as $key => $tag ) {
+        $_post_tags[] = 'Tag:'.$tag;
+    }
+    return $_post_tags;
+}
+`
+
+
+= wp_csv_exporter_category =
+
+Parameters:
+* `$category` - (array)(required) post category
+* `$post_id` - (integer) post id
+
+Example:
+`
+add_filter( 'wp_csv_exporter_category', 'wp_csv_exporter_category_filter', 10, 3 );
+function wp_csv_exporter_post_category_filter( $category ) {
+    $_category = array();
+    foreach ( $category as $key => $value ) {
+        $_category[] = 'Category:'.$value;
+    }
+    return $_category;
+}
+`
+
+
+= wp_csv_exporter_tax_{taxonomy} =
+
+Parameters:
+* `$term_values` - (array)(required) post taxonomy
+* `$post_id` - (integer) post id
+
+Example: taxonomy = "dogs"
+`
+add_filter( 'wp_csv_exporter_tax_dogs', 'wp_csv_exporter_tax_dogs_filter', 10, 3 );
+function wp_csv_exporter_tax_dogs_filter( $term_values, $post_id ) {
+    $_term_values = array();
+    foreach ( $term_values as $key => $term_value ) {
+        $_term_values[] = 'Dog:'.$term_value;
+    }
+    return $_term_values;
+}
+`
+
+
+= wp_csv_exporter_tax_{custom_field} =
+
+Parameters:
+* `$field` - (required) post custom field
+* `$post_id` - (integer) post id
+
+Example: custom field = "price"
+`
+add_filter( 'wp_csv_exporter_price', 'wp_csv_exporter_price_filter', 10, 3 );
+function wp_csv_exporter_price_filter( $field, $post_id ) {
+    return 'Price:'.$field;
+}
+`
+
 
 == Changelog ==
 **1.0.0 - December 01, 2014**  
