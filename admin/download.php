@@ -127,7 +127,6 @@ if (
 									},
 									$terms
 								);
-						//Filter
 						$term_values = apply_filters( 'wp_csv_exporter_'.$head_name , $term_values );
 						$term_values = urldecode( implode( ',', $term_values ) );
 						$customs_array += array( $head_name => $term_values );
@@ -182,8 +181,6 @@ if (
 		}
 		, $results );
 	
-	print_r($results);
-	die;
 	// 項目名を取得
 	$head[] = array_keys( $results[0] );
 
@@ -191,7 +188,7 @@ if (
 	$list = array_merge( $head, $results );
 
 	// ファイルの保存場所を設定
-	$filename = 'export-'.$post_type->name.'-'.date( "Y-m-d_H-i-s" ).'.csv';
+	$filename = 'export-'.$post_type->name.'-'.date_i18n( "Y-m-d_H-i-s" ).'.csv';
 	$filepath = WCE_PLUGIN_DIR . '/download/'.$filename;
 	$fp = fopen( $filepath, 'a' );
 
