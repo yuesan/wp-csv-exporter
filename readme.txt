@@ -22,13 +22,6 @@ It is also possible to set the number or date range of posts to download.
 3. The control panel of WP CSV Exporter is in 'Tools > CSV Export'.
 
 
-== Screenshots ==
-1. `/assets/screenshot-1.png`
-2. `/assets/screenshot-2.png`
-3. `/assets/screenshot-3.png`
-4. `/assets/screenshot-4.png`
-
-
 == How to customize export post data == 
 
 This plugin has below filters.
@@ -156,7 +149,7 @@ Parameters:
 Example:
 `
 add_filter( 'wp_csv_exporter_category', 'wp_csv_exporter_category_filter', 10, 3 );
-function wp_csv_exporter_post_category_filter( $category ) {
+function wp_csv_exporter_post_category_filter( $category, $post_id  ) {
     $_category = array();
     foreach ( $category as $key => $value ) {
         $_category[] = 'Category:'.$value;

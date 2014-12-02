@@ -93,7 +93,9 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 });
 </script>
 
-<div class="wrap">
+<div class="wrap plugin-wrap">
+
+<div class="plugin-main-area">
 <h2><?php $this->e('WP CSV Exporter', 'WP CSV Exporter') ?></h2>
 <p>
 <?php $this->e('Please set the fields you would like to export with CSV.','CSVでエクスポートする項目を設定してください。') ?>
@@ -254,4 +256,31 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 </div>
 <?php endforeach;?>
 </div>
+</div><!-- /.plugin-main-area -->
+
+<!-- .plugin-side-area -->
+<div class="plugin-side-area">
+<div class="plugin-side">
+<div class="inner">
+
+<div class="box">
+<?php $this->e('The detailed explanation of this plugin is this url.' );?>
+<a href="http://www.kigurumi.asia/imake/2548/" target="_blank">http://www.kigurumi.asia/imake/2548/</a> 
+<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fkigurumi.oihagi&amp;width=278&amp;height=62&amp;show_faces=false&amp;colorscheme=light&amp;stream=false&amp;show_border=false&amp;header=false&amp;appId=355939381181327" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;" allowTransparency="true"></iframe>
+</div>
+
+<div class="box">
+<?php printf($this->_('If you find this plugin usefull, don\'t hesitate to buy me some present from <a href="%s" target="_blank">my wishlist</a>.'), 'http://www.amazon.co.jp/registry/wishlist/2TUGZOYJW8T4T/?tag=wpccc-22'); ?>
+</div>
+
+<div class="box">
+<a href="https://twitter.com/intent/tweet?screen_name=kanakogi" class="twitter-mention-button" data-lang="ja" data-related="kanakogi">Tweet to @kanakogi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> 
+</div>
+
+</div>
+</div>
+</div>
+<!-- /.plugin-side-area -->
+
 </div>
