@@ -28,10 +28,6 @@ class WP_CSV_Exporter {
 		// css, js
 		add_action( 'admin_print_styles', array( $this, 'head_css', ) );
 		add_action( 'admin_print_scripts', array( $this, "head_js", ) );
-
-		// プラグインが有効・無効化されたとき
-		register_activation_hook( __FILE__, array( $this, 'activationHook', ) );
-		register_deactivation_hook( __FILE__, array( $this, 'deactivationHook', ) );
 	}
 
 
@@ -90,18 +86,6 @@ EOL;
 
 			wp_enqueue_script( "jquery-ui", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.js' );
 		}
-	}
-
-	/**
-	 * 有効化されたときに実行
-	 */
-	function activationHook() {
-	}
-
-	/**
-	 * 無効化ときに実行
-	 */
-	function deactivationHook() {
 	}
 
 	/**
