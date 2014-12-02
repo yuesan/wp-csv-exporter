@@ -197,13 +197,13 @@ if (
 		}
 		fputcsv( $fp, $fields );
 	}
+	fclose( $fp );
 
 	//ダウンロードの指示
 	header( 'Content-Type:application/octet-stream' );
 	header( 'Content-Disposition:filename='.$filename );  //ダウンロードするファイル名
 	header( 'Content-Length:' . filesize( $filepath ) );   //ファイルサイズを指定
 	readfile( $filepath );  //ダウンロード
-	fclose( $fp );
 	unlink( $filepath );
 
 }
