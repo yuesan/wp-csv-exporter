@@ -57,13 +57,13 @@ if (
 	//期間指定-公開日
 	if ( !empty( $post_date_from ) && !empty( $post_date_to ) ) {
 		$query .= "AND post_date BETWEEN '%s' AND '%s' ";
-		$value_parameter .=  ', ' . $post_date_from;
+		$value_parameter[] = $post_date_from;
 		$value_parameter[] = $post_date_to;
 	}
 	//期間指定-更新日
 	if ( !empty( $post_modified_from ) && !empty( $post_modified_to ) ) {
 		$query .= "AND post_modified BETWEEN '%s' AND '%s' ";
-		$value_parameter .=  ', ' . $post_modified_from;
+		$value_parameter[] = $post_modified_from;
 		$value_parameter[] = $post_modified_to;
 	}
 	//記事数が指定されている時
@@ -84,45 +84,50 @@ if (
 			/**
 			 * フィルター追加
 			 */
+			// foreach ($posts_values as $key => $value) {
+			//  $_result = apply_filters( 'wp_csv_exporter_'.$value, $result[$value], $result['post_id'] );
+			//  $customs_array += array( $value => $_result );
+			// }
+
 			//スラッグ
-			if ( array_key_exists( 'post_name', $posts_values ) ) {
+			if ( isset( $result['post_name'] ) ) {
 				$post_name = apply_filters( 'wp_csv_exporter_post_name', $result['post_name'], $result['post_id'] );
 				$customs_array += array( 'post_name' => $post_name );
 			}
 			//タイトル
-			if ( array_key_exists( 'post_title', $posts_values ) ) {
+			if ( isset( $result['post_title'] ) ) {
 				$post_title = apply_filters( 'wp_csv_exporter_post_title', $result['post_title'], $result['post_id'] );
 				$customs_array += array( 'post_title' => $post_title );
 			}
 			//本文
-			if ( array_key_exists( 'post_content', $posts_values ) ) {
+			if ( isset( $result['post_content'] ) ) {
 				$post_content = apply_filters( 'wp_csv_exporter_post_content', $result['post_content'], $result['post_id'] );
 				$customs_array += array( 'post_content' => $post_content );
 			}
 			//抜粋
-			if ( array_key_exists( 'post_excerpt', $posts_values ) ) {
+			if ( isset( $result['post_excerpt'] ) ) {
 				$post_excerpt = apply_filters( 'wp_csv_exporter_post_excerpt', $result['post_excerpt'], $result['post_id'] );
 				$customs_array += array( 'post_excerpt' => $post_excerpt );
 			}
 			//ステータス
-			if ( array_key_exists( 'post_status', $posts_values ) ) {
+			if ( isset( $result['post_status'] ) ) {
 				$post_status = apply_filters( 'wp_csv_exporter_post_status', $result['post_status'], $result['post_id'] );
 				$customs_array += array( 'post_status' => $post_status );
 			}
-			//投稿者
-			if ( array_key_exists( 'post_author', $posts_values ) ) {
-				$post_author = apply_filters( 'wp_csv_exporter_post_author', $result['post_author'], $result['post_id'] );
-				$customs_array += array( 'post_author' => $post_author );
-			}
 			//公開日時
-			if ( array_key_exists( 'post_date', $posts_values ) ) {
+			if ( isset( $result['post_date'] ) ) {
 				$post_date = apply_filters( 'wp_csv_exporter_post_date', $result['post_date'], $result['post_id'] );
 				$customs_array += array( 'post_date' => $post_date );
 			}
 			//変更日時
-			if ( array_key_exists( 'post_modified', $posts_values ) ) {
+			if ( isset( $result['post_modified'] ) ) {
 				$post_modified = apply_filters( 'wp_csv_exporter_post_modified', $result['post_modified'], $result['post_id'] );
 				$customs_array += array( 'post_modified' => $post_modified );
+			}
+			//投稿者
+			if ( isset( $result['post_author'] ) ) {
+				$post_author = apply_filters( 'wp_csv_exporter_post_author', $result['post_author'], $result['post_id'] );
+				$customs_array += array( 'post_author' => $post_author );
 			}
 			//サムネイル
 			if ( !empty( $_POST['post_thumbnail'] ) ) {
@@ -192,32 +197,55 @@ if (
 		}
 		, $results );
 
-	// 項目名を取得
-	$head[] = array_keys( $results[0] );
+	//結果があれば
+	if ( !empty( $results ) ) {
+		// 項目名を取得
+		$head[] = array_keys( $results[0] );
 
-	// 先頭に項目名を追加
-	$list = array_merge( $head, $results );
+		// 先頭に項目名を追加
+		$list = array_merge( $head, $results );
 
-	// ファイルの保存場所を設定
-	$filename = 'export-'.$post_type->name.'-'.date_i18n( "Y-m-d_H-i-s" ).'.csv';
-	$filepath = WCE_PLUGIN_DIR . '/download/'.$filename;
-	$fp = fopen( $filepath, 'a' );
+		// ファイルの保存場所を設定
+		$filename = 'export-'.$post_type->name.'-'.date_i18n( "Y-m-d_H-i-s" ).'.csv';
+		$filepath = WCE_PLUGIN_DIR . '/download/'.$filename;
+		$fp = fopen( $filepath, 'w' );
 
-	// 配列をカンマ区切りにしてファイルに書き込み
-	foreach ( $list as $fields ) {
+		// 配列をカンマ区切りにしてファイルに書き込み
+		foreach ( $list as $fields ) {
+			//文字コード変換
+			if ( function_exists( "mb_convert_variables" ) ) {
+				mb_convert_variables( $string_code, 'UTF-8', $fields );
+			}
+			fputcsv( $fp, $fields );
+		}
+		fclose( $fp );
+
+		//ダウンロードの指示
+		header( 'Content-Type:application/octet-stream' );
+		header( 'Content-Disposition:filename='.$filename );  //ダウンロードするファイル名
+		header( 'Content-Length:' . filesize( $filepath ) );   //ファイルサイズを指定
+		readfile( $filepath );  //ダウンロード
+		unlink( $filepath );
+
+	}else {
+		//結果がなければ、ダミーファイル
+		$filename = 'dummy-'.$post_type->name.'-'.date_i18n( "Y-m-d_H-i-s" ).'.txt';
+		$filepath = WCE_PLUGIN_DIR . '/download/'.$filename;
+		$fp = fopen( $filepath, 'w' );
+
 		//文字コード変換
 		if ( function_exists( "mb_convert_variables" ) ) {
 			mb_convert_variables( $string_code, 'UTF-8', $fields );
 		}
-		fputcsv( $fp, $fields );
-	}
-	fclose( $fp );
+		fwrite( $fp, '"'. $post_type->name.' post type" has no posts.' );
+		fclose( $fp );
 
-	//ダウンロードの指示
-	header( 'Content-Type:application/octet-stream' );
-	header( 'Content-Disposition:filename='.$filename );  //ダウンロードするファイル名
-	header( 'Content-Length:' . filesize( $filepath ) );   //ファイルサイズを指定
-	readfile( $filepath );  //ダウンロード
-	unlink( $filepath );
+		//ダウンロードの指示
+		header( 'Content-Type:application/octet-stream' );
+		header( 'Content-Disposition:filename='.$filename );  //ダウンロードするファイル名
+		header( 'Content-Length:' . filesize( $filepath ) );   //ファイルサイズを指定
+		readfile( $filepath );  
+		unlink( $filepath );
+	}
 
 }
