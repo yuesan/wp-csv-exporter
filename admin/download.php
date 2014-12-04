@@ -1,7 +1,7 @@
 <?php
 require_once dirname( __FILE__ ) . '/../../../../wp-load.php';
 require_once './functions.php';
-$errors = '';
+$errors = array();
 if (
 	isset( $_POST['post_type'] ) &&
 	is_user_logged_in() &&
@@ -228,24 +228,20 @@ if (
 		unlink( $filepath );
 
 	}else {
-		//結果がなければ、ダミーファイル
-		$filename = 'dummy-'.$post_type->name.'-'.date_i18n( "Y-m-d_H-i-s" ).'.txt';
-		$filepath = WCE_PLUGIN_DIR . '/download/'.$filename;
-		$fp = fopen( $filepath, 'w' );
-
-		//文字コード変換
-		if ( function_exists( "mb_convert_variables" ) ) {
-			mb_convert_variables( $string_code, 'UTF-8', $fields );
-		}
-		fwrite( $fp, '"'. $post_type->name.' post type" has no posts.' );
-		fclose( $fp );
-
-		//ダウンロードの指示
-		header( 'Content-Type:application/octet-stream' );
-		header( 'Content-Disposition:filename='.$filename );  //ダウンロードするファイル名
-		header( 'Content-Length:' . filesize( $filepath ) );   //ファイルサイズを指定
-		readfile( $filepath );  
-		unlink( $filepath );
+		//結果がない場合
+		$errors[] = $post_type->name.' post type" has no posts.';
 	}
 
+}else{
+	$errors[] = 'エラーが起きました。';
 }
+
+//エラー表示
+if(!empty($errors)){
+	foreach ($errors as $key => $value) {
+		echo $value.PHP_EOL;
+	}
+}
+
+
+
