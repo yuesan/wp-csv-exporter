@@ -41,7 +41,7 @@ if ( $messages = get_transient( 'post-updated' ) ) {
 
         <ul class="plugin_tab">
             <li class="plugin_tab"><a href="<?php echo $this->setting_url(''); ?>">CSV <?php $this->e('Export', 'エクスポート') ?></a></li>    
-            <li class="select">Setting</li>
+            <li class="select"><?php $this->e( 'License key' ) ?></li>
         </ul>
 
         <div class="plugin_contents">
@@ -72,7 +72,7 @@ if ( $messages = get_transient( 'post-updated' ) ) {
                         <table class="setting_table">
                             <tbody>
                                 <tr>
-                                    <th><?php $this->e('license key') ?></th>
+                                    <th><?php $this->e('License key') ?></th>
                                     <td>
                                         <input type="text" id="wce-license-key" name="license_key" class="license_key" value="<?php echo esc_html($_POST['license_key']) ?>" style="width:350px">
                                         <?php 

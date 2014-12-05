@@ -1,7 +1,8 @@
 .plugin_tab{
     overflow:hidden;
-    border-top:1px dotted #ddd;
+    /*border-top:1px dotted #ddd;*/
     padding-top: 5px;
+    /*border-bottom: 1px solid #ddd;*/
 }
 .plugin_tab li{
     background:#ddd;
@@ -13,16 +14,27 @@
 }
 .plugin_tab li.select{
     background:#f1f1f1;
-    border-top:1px solid #ddd;
-    border-right:1px solid #ddd;
+    border-top:1px solid #ccc;
+    border-right:1px solid #ccc;
     border-bottom:1px solid #f1f1f1;
-    border-left:1px solid #ddd;
+    border-left:1px solid #ccc;
 }
 .plugin_tab li.plugin_setting{
     float: right;
     background:#f1f1f1;
     border:none;
     cursor: default;
+}
+.plugin_tab li.plugin_setting a{
+    text-decoration: none;
+    border: 1px dotted #ccc;
+    padding: 3px 8px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;    
+}
+.plugin_tab li.plugin_setting a:hover{
+    text-decoration: underline;
 }
 .plugin_tab .plugin_setting.select{
     border:none;

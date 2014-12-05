@@ -120,10 +120,8 @@ endforeach;
 <ul class="plugin_tab">
 <?php foreach ( $post_types as $post_type ): ?>
 <li class="plugin_tab-<?php echo $post_type->name;?>"><?php echo $post_type->labels->name;?></li>
-<?php 
-endforeach;
-?>
-<li class="plugin_setting"><a href="<?php echo $this->setting_url('setting'); ?>">Setting &gt;</a></li>
+<?php endforeach; ?>
+<li class="plugin_setting"><a href="<?php echo $this->setting_url('setting'); ?>"><?php $this->e( 'License key' ) ?></a></li>
 </ul>
 
 <div class="plugin_contents">
@@ -271,7 +269,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 <?php else: ?>
     <div class="plugin_content">
         <p><?php $this->e( 'Please enter a license key to download CSVs for custom post types.', 'カスタム投稿タイプのCSVをダウンロードするにはライセンスキーを登録してください。' ) ?></p> 
-        <p><a href="<?php echo $this->plugin_setting_url ?>"><?php $this->e( 'Enter license key', 'ライセンスキーの登録' ) ?></a></p>
+        <p><a href="<?php echo $this->setting_url('setting'); ?>"><?php $this->e( 'Enter license key', 'ライセンスキーの登録' ) ?></a></p>
     </div>
 <?php 
     endif;
