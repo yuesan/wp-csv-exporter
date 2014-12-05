@@ -1,5 +1,7 @@
 .plugin_tab{
     overflow:hidden;
+    border-top:1px dotted #ddd;
+    padding-top: 5px;
 }
 .plugin_tab li{
     background:#ddd;
@@ -15,6 +17,21 @@
     border-right:1px solid #ddd;
     border-bottom:1px solid #f1f1f1;
     border-left:1px solid #ddd;
+}
+.plugin_tab li.plugin_setting{
+    float: right;
+    background:#f1f1f1;
+    border:none;
+    cursor: default;
+}
+.plugin_tab .plugin_setting.select{
+    border:none;
+}
+.plugin_tab li a{
+    color: #333;
+}
+.plugin_tab .plugin_setting a{
+    color: #666;
 }
 .plugin_contents{
     clear:left;
@@ -108,7 +125,7 @@ table.setting_table td ul.setting_list{
 
 .plugin-wrap{
     display: table;
-    
+    width: 100%;
 }
 
 .plugin-main-area{

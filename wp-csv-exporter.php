@@ -18,33 +18,47 @@ define( 'WCE_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );
 
 class WP_CSV_Exporter {
 	private $textdomain = 'wce';
+	private $wce_options;
+	private $plugin_admin_url = '';
+	private $plugin_setting_url = '';
 
 	public function __construct() {
 		$this->init();
-		
+
 		// 管理メニューに追加するフック
 		add_action( 'admin_menu', array( $this, 'admin_menu', ) );
 
 		// css, js
 		add_action( 'admin_print_styles', array( $this, 'head_css', ) );
 		add_action( 'admin_print_scripts', array( $this, "head_js", ) );
+
+        // プラグインが有効・無効化されたとき
+        register_activation_hook( __FILE__, array( $this, 'activationHook' ) );
 	}
 
 
-    function init() {
-        //他言語化
-        load_plugin_textdomain( $this->textdomain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
-    }
+	function init() {
+		//他言語化
+		load_plugin_textdomain( $this->textdomain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	}
 
 	/**
 	 * メニューを表示
 	 */
 	function admin_menu() {
-		add_submenu_page( 'tools.php', $this->_('CSV Export', 'CSVエクスポート'), $this->_('CSV Export', 'CSVエクスポート'), 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
+		add_submenu_page( 'tools.php', $this->_( 'CSV Export', 'CSVエクスポート' ), $this->_( 'CSV Export', 'CSVエクスポート' ), 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
+		add_submenu_page( 'tools.php', $this->_( 'CSV Export', 'CSVエクスポート' ), '', 'level_7', WCE_PLUGIN_NAME.'-setting', array( $this, 'show_setting_page', ) );
+
+		$this->plugin_admin_url = '/wp-admin/tools.php?page='.WCE_PLUGIN_NAME;
+		$this->plugin_setting_url = '/wp-admin/tools.php?page='.WCE_PLUGIN_NAME.'-setting';
 	}
 
 	function show_options_page() {
 		require_once WCE_PLUGIN_DIR . '/admin/admin.php';
+	}
+
+	function show_setting_page() {
+		require_once WCE_PLUGIN_DIR . '/admin/setting.php';
 	}
 
 	/**
@@ -52,7 +66,7 @@ class WP_CSV_Exporter {
 	 */
 	function get_custom_field_list( $type ) {
 		global $wpdb;
-		$value_parameter = esc_html($type);
+		$value_parameter = esc_html( $type );
 		$pattern = "\_%";
 		$query = <<< EOL
 SELECT DISTINCT meta_key
@@ -62,14 +76,14 @@ INNER JOIN $wpdb->posts
 WHERE $wpdb->posts.post_type = '%s'
 AND $wpdb->postmeta.meta_key NOT LIKE '%s'
 EOL;
-		return $wpdb->get_results( $wpdb->prepare($query, array($value_parameter, $pattern) ), ARRAY_A );
+		return $wpdb->get_results( $wpdb->prepare( $query, array( $value_parameter, $pattern ) ), ARRAY_A );
 	}
 
 	/**
 	 * 管理画面CSS追加
 	 */
 	function head_css() {
-		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME ) {
+		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME || $_REQUEST["page"] == WCE_PLUGIN_NAME.'-setting' ) {
 			wp_enqueue_style( "wce_css", WCE_PLUGIN_URL . '/css/style.css' );
 			wp_enqueue_style( "jquery-ui_css", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.css' );
 		}
@@ -80,13 +94,27 @@ EOL;
 	 */
 	function head_js() {
 		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME ) {
-			wp_enqueue_script( "wce_js", WCE_PLUGIN_URL . '/js/scripts.js', array(
+			wp_enqueue_script( "wce_admin_js", WCE_PLUGIN_URL . '/js/admin.js', array(
 					"jquery",
 				) );
 
 			wp_enqueue_script( "jquery-ui", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.js' );
 		}
+		//設定画面
+		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME.'-setting' ) {
+			wp_enqueue_script( "wce_setting_js", WCE_PLUGIN_URL . '/js/setting.js', array(
+					"jquery",
+				) );
+		}
 	}
+
+
+    /**
+     * プラグインが有効化されたときに実行
+     */
+    function activationHook() {
+
+    }
 
 	/**
 	 * 翻訳用
