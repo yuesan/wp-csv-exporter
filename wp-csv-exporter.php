@@ -15,9 +15,9 @@ define( 'WCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCE_PLUGIN_NAME', trim( dirname( WCE_PLUGIN_BASENAME ), '/' ) );
 define( 'WCE_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
 define( 'WCE_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );
-
-class WP_CSV_Exporter {
-	private $textdomain = 'wce';
+require('classes/base.php');
+class WP_CSV_Exporter extends Base{
+	protected $textdomain = 'wce';
 	private $wce_keys = array(
 		'gumroad' => '5a9228e90e6b405a6db2fa95f0c8cb0af973e21d3e95e67e9b06e4e932bff3fa',
 		'storesjp' => '8ddafa75927b750cf51d51e070a90a8ba1a801ac501bc68e0ff3a8928942d4d1',
@@ -46,25 +46,17 @@ class WP_CSV_Exporter {
 	 */
 	function admin_menu() {
 		add_submenu_page( 'tools.php', $this->_( 'CSV Export', 'CSVエクスポート' ), $this->_( 'CSV Export', 'CSVエクスポート' ), 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
-		add_filter('plugin_action_links', array($this, 'plugin_page_link'), 10, 2);
 	}
 
+    /**
+     * プラグインのメインページ
+     */
 	function show_options_page() {
 		require_once WCE_PLUGIN_DIR . '/admin/index.php';
 	}
 
-    public function plugin_page_link($links, $file){
-        if(false !== strpos($file, 'wp-csv-exporter')){
-            array_unshift($links, '<a href="'.$this->setting_url().'">'.__('Settings').'</a>');
-        }
-        return $links;
-    }
-
     /**
      * Get admin panel URL
-     *
-     * @param string $view
-     * @return string|void
      */
     public function setting_url($view = ''){
         $query = array(
@@ -74,32 +66,6 @@ class WP_CSV_Exporter {
             $query['view'] = $view;
         }
         return admin_url('tools.php?'.http_build_query($query));
-    }
-
-    /**
-     * Load template file
-     *
-     * @param string $name
-     */
-    private function get_template($name){
-        $path = WCE_PLUGIN_DIR."{$name}.php";
-        if( file_exists($path) ){
-            include $path;
-        }
-    }
-
-    /**
-     * return $_REQUEST
-     *
-     * @param string $key
-     * @return mixed
-     */
-    public function request($key){
-        if(isset($_REQUEST[$key])){
-            return $_REQUEST[$key];
-        }else{
-            return null;
-        }
     }
 
 	/**
@@ -177,14 +143,5 @@ EOL;
 		return false;
 	}
 
-	/**
-	 * 翻訳用
-	 */
-	public function e( $text, $ja = null ) {
-		_e( $text, $this->textdomain );
-	}
-	public function _( $text, $ja = null ) {
-		return __( $text, $this->textdomain );
-	}
 }
 $wp_csv_exporter = new WP_CSV_Exporter();

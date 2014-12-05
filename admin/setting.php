@@ -40,7 +40,7 @@ if ( $messages = get_transient( 'post-updated' ) ) {
         </p>
 
         <ul class="plugin_tab">
-            <li class="plugin_tab"><a href="<?php echo $this->plugin_admin_url ?>">CSV <?php $this->e('Export', 'エクスポート') ?></a></li>    
+            <li class="plugin_tab"><a href="<?php echo $this->setting_url(''); ?>">CSV <?php $this->e('Export', 'エクスポート') ?></a></li>    
             <li class="select">Setting</li>
         </ul>
 
