@@ -123,7 +123,7 @@ endforeach;
 <?php 
 endforeach;
 ?>
-<li class="plugin_setting"><a href="<?php echo $this->plugin_setting_url ?>">Setting &gt;</a></li>
+<li class="plugin_setting"><a href="<?php echo $this->setting_url('setting'); ?>">Setting &gt;</a></li>
 </ul>
 
 <div class="plugin_contents">
