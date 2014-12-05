@@ -26,8 +26,6 @@ unset(
     $post_taxonomies['post_format']
 );
 
-$is_full_type = ( get_option( 'wce_full_type' ) === 'wp-csv-exporter' ) ? true : false;
-// $is_full_type = true;
 ?>
 <script type="text/javascript">
 jQuery(function($){
@@ -80,7 +78,7 @@ jQuery(function($){
 
 <?php 
 foreach ( $post_types as $post_type ):
-    if( $post_type->name == 'post' || $is_full_type):
+    if( $post_type->name == 'post' || $post_type->name == 'page' || $this->is_certified() ):
 ?>
 $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
     var total_check_num = $("#form_<?php echo esc_attr( $post_type->name ) ?> input.post_status:checked").length;
@@ -131,7 +129,7 @@ endforeach;
 <div class="plugin_contents">
 <?php 
 foreach ( $post_types as $post_type ): 
-    if( $post_type->name == 'post' || $is_full_type):
+    if( $post_type->name == 'post' || $post_type->name == 'page' ||$this->is_certified() ):
 ?>
     <div class="plugin_content">
 <form action="<?php echo WCE_PLUGIN_URL .'/admin/download.php'; ?>" method="post" id="form_<?php echo esc_attr( $post_type->name ) ?>" target="_blank">
@@ -272,7 +270,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 </div>
 <?php else: ?>
     <div class="plugin_content">
-        <p>この投稿タイプのCSVをダウンロードするにはライセンスキーを登録してください。</p> 
+        <p>カスタム投稿タイプのCSVをダウンロードするにはライセンスキーを登録してください。</p> 
         <p><a href="<?php echo $this->plugin_setting_url ?>">ライセンスキーの登録</a></p>
     </div>
 <?php 

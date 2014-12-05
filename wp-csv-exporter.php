@@ -18,9 +18,12 @@ define( 'WCE_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );
 
 class WP_CSV_Exporter {
 	private $textdomain = 'wce';
-	private $wce_options;
 	private $plugin_admin_url = '';
 	private $plugin_setting_url = '';
+	private $wce_keys = array(
+		'gumroad' => '5a9228e90e6b405a6db2fa95f0c8cb0af973e21d3e95e67e9b06e4e932bff3fa',
+		'storesjp' => '8ddafa75927b750cf51d51e070a90a8ba1a801ac501bc68e0ff3a8928942d4d1',
+	);
 
 	public function __construct() {
 		$this->init();
@@ -32,8 +35,6 @@ class WP_CSV_Exporter {
 		add_action( 'admin_print_styles', array( $this, 'head_css', ) );
 		add_action( 'admin_print_scripts', array( $this, "head_js", ) );
 
-        // プラグインが有効・無効化されたとき
-        register_activation_hook( __FILE__, array( $this, 'activationHook' ) );
 	}
 
 
@@ -47,7 +48,7 @@ class WP_CSV_Exporter {
 	 */
 	function admin_menu() {
 		add_submenu_page( 'tools.php', $this->_( 'CSV Export', 'CSVエクスポート' ), $this->_( 'CSV Export', 'CSVエクスポート' ), 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
-		add_submenu_page( 'tools.php', $this->_( 'CSV Export', 'CSVエクスポート' ), '', 'level_7', WCE_PLUGIN_NAME.'-setting', array( $this, 'show_setting_page', ) );
+		add_submenu_page( 'tools.php', $this->_( 'CSV Export Setting' ), '', 'level_7', WCE_PLUGIN_NAME.'-setting', array( $this, 'show_setting_page', ) );
 
 		$this->plugin_admin_url = '/wp-admin/tools.php?page='.WCE_PLUGIN_NAME;
 		$this->plugin_setting_url = '/wp-admin/tools.php?page='.WCE_PLUGIN_NAME.'-setting';
@@ -59,24 +60,6 @@ class WP_CSV_Exporter {
 
 	function show_setting_page() {
 		require_once WCE_PLUGIN_DIR . '/admin/setting.php';
-	}
-
-	/**
-	 * カスタムフィールドリストを取得
-	 */
-	function get_custom_field_list( $type ) {
-		global $wpdb;
-		$value_parameter = esc_html( $type );
-		$pattern = "\_%";
-		$query = <<< EOL
-SELECT DISTINCT meta_key
-FROM $wpdb->postmeta
-INNER JOIN $wpdb->posts
-        ON $wpdb->posts.ID = $wpdb->postmeta.post_id
-WHERE $wpdb->posts.post_type = '%s'
-AND $wpdb->postmeta.meta_key NOT LIKE '%s'
-EOL;
-		return $wpdb->get_results( $wpdb->prepare( $query, array( $value_parameter, $pattern ) ), ARRAY_A );
 	}
 
 	/**
@@ -100,21 +83,58 @@ EOL;
 
 			wp_enqueue_script( "jquery-ui", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.js' );
 		}
-		//設定画面
-		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME.'-setting' ) {
-			wp_enqueue_script( "wce_setting_js", WCE_PLUGIN_URL . '/js/setting.js', array(
-					"jquery",
-				) );
-		}
+	}
+
+	/**
+	 * カスタムフィールドリストを取得
+	 */
+	function get_custom_field_list( $type ) {
+		global $wpdb;
+		$value_parameter = esc_html( $type );
+		$pattern = "\_%";
+		$query = <<< EOL
+SELECT DISTINCT meta_key
+FROM $wpdb->postmeta
+INNER JOIN $wpdb->posts
+        ON $wpdb->posts.ID = $wpdb->postmeta.post_id
+WHERE $wpdb->posts.post_type = '%s'
+AND $wpdb->postmeta.meta_key NOT LIKE '%s'
+EOL;
+		return $wpdb->get_results( $wpdb->prepare( $query, array( $value_parameter, $pattern ) ), ARRAY_A );
 	}
 
 
-    /**
-     * プラグインが有効化されたときに実行
-     */
-    function activationHook() {
+	/**
+	 * ライセンスキーの確認
+	 */
+	function verify_license_key( $license_key ) {
+		$license_key_sha256 = hash_hmac( 'sha256' , $license_key , false );
+		foreach ( $this->wce_keys as $key => $value ) {
+			if ( $value == $license_key_sha256 ) {
+				$wce_options['license_key'] = $license_key_sha256;
+				update_option( 'wce_options', $wce_options );
+				return true;
+			}
+		}
+		update_option( 'wce_options', $license_key );
+		return false;
+	}
 
-    }
+	/**
+	 * 認証確認
+	 * @return boolean [description]
+	 */
+	function is_certified() {
+		$wce_options = get_option( 'wce_options' );
+		if ( !empty($wce_options) && isset($wce_options['license_key']) ) {
+			foreach ( $this->wce_keys as $key => $value ) {
+				if ( $wce_options['license_key'] == $value ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * 翻訳用

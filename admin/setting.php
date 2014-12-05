@@ -1,3 +1,36 @@
+<?php 
+require_once WCE_PLUGIN_DIR . '/admin/functions.php';
+
+if(
+    isset( $_POST['license_key'] ) &&
+    is_user_logged_in() &&
+    isset( $_POST['_wpnonce'] ) &&
+    wp_verify_nonce( $_POST['_wpnonce'], 'csv_exporter' ) 
+   ){
+    //エラー
+    $e = new WP_Error();
+    $license_key = esc_html($_POST['license_key']);
+
+    //認証
+    if( $this->verify_license_key($license_key) ){
+        $e->add( 'error', $this->_( "Settings saved", 'ライセンスキーが認証されました。' ) );
+        set_transient( 'post-updated', $e->get_error_messages(), 1 );
+    }else{
+        $e->add( 'error', $this->_( "fail", 'ライセンスキーの認証に失敗しました。' ) );
+        set_transient( 'post-error', $e->get_error_messages(), 1 );
+    }
+
+}
+
+//保存成功
+if ( $messages = get_transient( 'post-updated' ) ) {
+    display_messages( $messages, 'updated' );
+
+//保存失敗
+}elseif ( $messages = get_transient( 'post-error' ) ) {
+    display_messages( $messages, 'error' );
+}
+?>
 <div class="wrap plugin-wrap">
 
     <div class="plugin-main-area">
@@ -14,7 +47,8 @@
         <div class="plugin_contents">
 
             <div class="plugin_content">
-                <form action="http://services.flipclap.co.jp/wp-csv-exporter/license-key.php" method="post" id="form">
+                <form action="" method="post" id="form">
+                    <?php wp_nonce_field( 'csv_exporter' );?>
                     <div class="tool-box">
                         <p>
                             ライセンスキーを入力すると「投稿」以外の「固定ページ」や「カスタム投稿タイプ」のCSVもダウンロードが出来るようになります。
@@ -39,12 +73,18 @@
                             <tbody>
                                 <tr>
                                     <th><?php $this->e('license key') ?></th>
-                                    <td><input type="text" id="wce-license-key" name="license-key" class="license-key" value="" style="width:350px"></td>
+                                    <td>
+                                        <input type="text" id="wce-license-key" name="license_key" class="license_key" value="<?php echo esc_html($_POST['license_key']) ?>" style="width:350px">
+                                        <?php 
+                                        if( $this->is_certified() ){
+                                            _e('<strong>認証済み</strong>');
+                                        }
+                                        ?>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <input type="hidden" name="back_url" value="<?php echo (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]; ?>" >
                     <p class="submit"><input type="submit" id="wce-lsubmit" class="button-primary" value="<?php $this->e('Submit') ?>" /></p>
                 </form>
             </div>
