@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgstr-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-06 12:00+0900\n"
 "POT-Creation-Date: 2012-04-19 14:58+0900\n"
-"PO-Revision-Date: 2014-12-02 08:21+0900\n"
+"PO-Revision-Date: 2014-12-05 19:30+0900\n"
 "Last-Translator: Masahiro Nakashima <kanakogi@gmail.com>\n"
 "Language-Team: JAPANESE\n"
 "MIME-Version: 1.0\n"
@@ -137,3 +137,33 @@ msgstr "抜粋"
 
 msgid "Thumbnail"
 msgstr "アイキャッチ画像"
+
+msgid "License key has been authenticated."
+msgstr "ライセンスキーが認証されました。"
+
+msgid "License key authentication failed."
+msgstr "ライセンスキーの認証に失敗しました。"
+
+msgid "License key input."
+msgstr "ライセンスキーの入力。"
+
+msgid ""
+"Inputting a license key will enable you to download CSVs for static pages "
+"and custom post types in addition to those for posts."
+msgstr ""
+"ライセンスキーを入力すると「投稿」以外の「固定ページ」や「カスタム投稿タイ"
+"プ」のCSVもダウンロードが出来るようになります。"
+
+msgid "A license key can be purchased from the website below."
+msgstr "ライセンスキーは、以下のWEBサイトから購入ができます。"
+
+msgid "Authenticated"
+msgstr "認証済み"
+
+msgid "Please enter a license key to download CSVs for custom post types."
+msgstr ""
+"カスタム投稿タイプのCSVをダウンロードするにはライセンスキーを登録してくださ"
+"い。"
+
+msgid "Enter license key"
+msgstr "ライセンスキーの登録"

@@ -13,10 +13,10 @@ if(
 
     //認証
     if( $this->verify_license_key($license_key) ){
-        $e->add( 'error', $this->_( "Settings saved", 'ライセンスキーが認証されました。' ) );
+        $e->add( 'error', $this->_( "License key has been authenticated.", 'ライセンスキーが認証されました。' ) );
         set_transient( 'post-updated', $e->get_error_messages(), 1 );
     }else{
-        $e->add( 'error', $this->_( "fail", 'ライセンスキーの認証に失敗しました。' ) );
+        $e->add( 'error', $this->_( "License key authentication failed.", 'ライセンスキーの認証に失敗しました。' ) );
         set_transient( 'post-error', $e->get_error_messages(), 1 );
     }
 
@@ -36,7 +36,7 @@ if ( $messages = get_transient( 'post-updated' ) ) {
     <div class="plugin-main-area">
         <h2><?php $this->e('WP CSV Exporter', 'WP CSV Exporter') ?></h2>
         <p>
-            ライセンスキーの入力。
+            <?php $this->e( 'License key input.', 'ライセンスキーの入力。' ) ?>
         </p>
 
         <ul class="plugin_tab">
@@ -51,10 +51,10 @@ if ( $messages = get_transient( 'post-updated' ) ) {
                     <?php wp_nonce_field( 'csv_exporter' );?>
                     <div class="tool-box">
                         <p>
-                            ライセンスキーを入力すると「投稿」以外の「固定ページ」や「カスタム投稿タイプ」のCSVもダウンロードが出来るようになります。
+                            <?php $this->e( 'Inputting a license key will enable you to download CSVs for static pages and custom post types in addition to those for posts.', 'ライセンスキーを入力すると「投稿」以外の「固定ページ」や「カスタム投稿タイプ」のCSVもダウンロードが出来るようになります。' ) ?>
                         </p>
                         <p>
-                            ライセンスキーは、以下のWEBサイトから購入ができます。
+                            <?php $this->e( 'A license key can be purchased from the website below.', 'ライセンスキーは、以下のWEBサイトから購入ができます。' ) ?>
                         </p>
                           <table class="setting_table">
                             <tbody>
@@ -63,7 +63,7 @@ if ( $messages = get_transient( 'post-updated' ) ) {
                                     <td>$9.8</td>
                                 </tr>
                                 <tr>
-                                    <th>- <a href="https://kanakogi.stores.jp/#!/items/5480e8583cd482f22b001f7e" target="_blank">STORES.JP</a></th>
+                                    <th>- <a href="https://flipclap.stores.jp/#!/items/5480e8583cd482f22b001f7e" target="_blank">STORES.JP</a></th>
                                     <td>¥980</td>
                                 </tr>
                             </tbody>
@@ -77,7 +77,7 @@ if ( $messages = get_transient( 'post-updated' ) ) {
                                         <input type="text" id="wce-license-key" name="license_key" class="license_key" value="<?php echo esc_html($_POST['license_key']) ?>" style="width:350px">
                                         <?php 
                                         if( $this->is_certified() ){
-                                            _e('<strong>認証済み</strong>');
+                                            echo '<strong>'.$this->_('Authenticated', '認証済み').'</strong>';
                                         }
                                         ?>
                                     </td>

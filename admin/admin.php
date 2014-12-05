@@ -270,8 +270,8 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 </div>
 <?php else: ?>
     <div class="plugin_content">
-        <p>カスタム投稿タイプのCSVをダウンロードするにはライセンスキーを登録してください。</p> 
-        <p><a href="<?php echo $this->plugin_setting_url ?>">ライセンスキーの登録</a></p>
+        <p><?php $this->e( 'Please enter a license key to download CSVs for custom post types.', 'カスタム投稿タイプのCSVをダウンロードするにはライセンスキーを登録してください。' ) ?></p> 
+        <p><a href="<?php echo $this->plugin_setting_url ?>"><?php $this->e( 'Enter license key', 'ライセンスキーの登録' ) ?></a></p>
     </div>
 <?php 
     endif;
@@ -286,13 +286,9 @@ endforeach;
 <div class="inner">
 
 <div class="box">
-<?php $this->e( 'The detailed explanation of this plugin is this url.' );?>
+<?php $this->e( 'The detailed explanation of this plugin is this url. ' );?>
 <a href="http://www.kigurumi.asia/imake/2548/" target="_blank">http://www.kigurumi.asia/imake/2548/</a>
 <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fkigurumi.oihagi&amp;width=278&amp;height=62&amp;show_faces=false&amp;colorscheme=light&amp;stream=false&amp;show_border=false&amp;header=false&amp;appId=355939381181327" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;" allowTransparency="true"></iframe>
-</div>
-
-<div class="box">
-<?php printf( $this->_( 'If you find this plugin usefull, don\'t hesitate to buy me some present from <a href="%s" target="_blank">my wishlist</a>.' ), 'http://www.amazon.co.jp/registry/wishlist/2TUGZOYJW8T4T/?tag=wpccc-22' ); ?>
 </div>
 
 <div class="box">
