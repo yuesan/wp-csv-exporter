@@ -134,7 +134,7 @@ foreach ( $post_types as $post_type ):
 <?php wp_nonce_field( 'csv_exporter' );?>
 
 <div class="tool-box">
-<h3><?php $this->e( 'Settings', '設定' ) ?></h3>
+<h3><?php echo $post_type->labels->name;?> <?php $this->e( 'Settings', '設定' ) ?></h3>
 <ul class="setting_list">
     <li><label><input type="radio" name="post_id" value="post_id" checked="checked" required>*<?php $this->e( 'Post ID', '投稿ID' ) ?></label></li>
     <li><label><input type="radio" name="post_type" value="<?php echo esc_attr( $post_type->name ) ?>" checked="checked" required>*<?php $this->e( 'Post Type', '投稿タイプ' ) ?></label></li>

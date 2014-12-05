@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP CSV Exporter
-Plugin URI: http://www.kigurumi.asia/imake/3603/
+Plugin URI: http://www.kigurumi.asia
 Description: You can export posts in CSV format for each post type. It is compatible with posts' custom fields and custom taxonomies. It is also possible to set the number or date range of posts to download.
 Author: Nakashima Masahiro
 Version: 1.0.0
@@ -10,12 +10,14 @@ License: GPLv2 or later
 Text Domain: wce
 Domain Path: /languages/
  */
+require('classes/base.php');
+
 define( 'WCE_VERSION', '1.0.0' );
 define( 'WCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCE_PLUGIN_NAME', trim( dirname( WCE_PLUGIN_BASENAME ), '/' ) );
 define( 'WCE_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
 define( 'WCE_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );
-require('classes/base.php');
+
 class WP_CSV_Exporter extends Base{
 	protected $textdomain = 'wce';
 	private $wce_keys = array(
@@ -36,7 +38,7 @@ class WP_CSV_Exporter extends Base{
 	}
 
 
-	function init() {
+	public function init() {
 		//他言語化
 		load_plugin_textdomain( $this->textdomain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
@@ -44,14 +46,14 @@ class WP_CSV_Exporter extends Base{
 	/**
 	 * メニューを表示
 	 */
-	function admin_menu() {
+	public function admin_menu() {
 		add_submenu_page( 'tools.php', $this->_( 'CSV Export', 'CSVエクスポート' ), $this->_( 'CSV Export', 'CSVエクスポート' ), 'level_7', WCE_PLUGIN_NAME, array( $this, 'show_options_page', ) );
 	}
 
     /**
      * プラグインのメインページ
      */
-	function show_options_page() {
+	public function show_options_page() {
 		require_once WCE_PLUGIN_DIR . '/admin/index.php';
 	}
 
@@ -71,7 +73,7 @@ class WP_CSV_Exporter extends Base{
 	/**
 	 * 管理画面CSS追加
 	 */
-	function head_css() {
+	public function head_css() {
 		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME ) {
 			wp_enqueue_style( "wce_css", WCE_PLUGIN_URL . '/css/style.css' );
 			wp_enqueue_style( "jquery-ui_css", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.css' );
@@ -81,7 +83,7 @@ class WP_CSV_Exporter extends Base{
 	/*
 	 * 管理画面JS追加
 	 */
-	function head_js() {
+	public function head_js() {
 		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME && $_REQUEST["view"] != 'setting' ) {
 			wp_enqueue_script( "wce_admin_js", WCE_PLUGIN_URL . '/js/admin.js', array(
 					"jquery",
@@ -94,7 +96,7 @@ class WP_CSV_Exporter extends Base{
 	/**
 	 * カスタムフィールドリストを取得
 	 */
-	function get_custom_field_list( $type ) {
+	public function get_custom_field_list( $type ) {
 		global $wpdb;
 		$value_parameter = esc_html( $type );
 		$pattern = "\_%";
@@ -113,7 +115,7 @@ EOL;
 	/**
 	 * ライセンスキーの確認
 	 */
-	function verify_license_key( $license_key ) {
+	public function verify_license_key( $license_key ) {
 		$license_key_sha256 = hash_hmac( 'sha256' , $license_key , false );
 		foreach ( $this->wce_keys as $key => $value ) {
 			if ( $value == $license_key_sha256 ) {
@@ -131,7 +133,7 @@ EOL;
 	 *
 	 * @return boolean [description]
 	 */
-	function is_certified() {
+	public function is_certified() {
 		$wce_options = get_option( 'wce_options' );
 		if ( !empty( $wce_options ) && isset( $wce_options['license_key'] ) ) {
 			foreach ( $this->wce_keys as $key => $value ) {
