@@ -36,12 +36,12 @@ if ( $messages = get_transient( 'post-updated' ) ) {
     <div class="plugin-main-area">
         <h2><?php $this->e('WP CSV Exporter', 'WP CSV Exporter') ?></h2>
         <p>
-            <?php $this->e( 'License key input.', 'ライセンスキーの入力。' ) ?>
+            <?php $this->e( 'WP CSV Exporter Add-Ons', 'ライセンスキーの入力。' ) ?>
         </p>
 
         <ul class="plugin_tab">
             <li class="plugin_tab"><a href="<?php echo $this->setting_url(''); ?>">CSV <?php $this->e('Export', 'エクスポート') ?></a></li>    
-            <li class="select"><?php $this->e( 'License key' ) ?></li>
+            <li class="select"><?php $this->e( 'Add-Ons' ) ?></li>
         </ul>
 
         <div class="plugin_contents">
@@ -51,10 +51,10 @@ if ( $messages = get_transient( 'post-updated' ) ) {
                     <?php wp_nonce_field( 'csv_exporter' );?>
                     <div class="tool-box">
                         <p>
-                            <?php $this->e( 'Inputting a license key will enable you to download CSVs for static pages and custom post types in addition to those for posts.', 'ライセンスキーを入力すると「投稿」以外の「固定ページ」や「カスタム投稿タイプ」のCSVもダウンロードが出来るようになります。' ) ?>
+                            <?php $this->e( 'Add-Ons will enable you to download CSVs for static pages and custom post types in addition to those for posts.', 'アドオンを購入すると「投稿」以外の「固定ページ」や「カスタム投稿タイプ」のCSVもダウンロードが出来るようになります。' ) ?>
                         </p>
                         <p>
-                            <?php $this->e( 'A license key can be purchased from the website below.', 'ライセンスキーは、以下のWEBサイトから購入ができます。' ) ?>
+                            <?php $this->e( 'Add-Ons can be purchased from the website below.', 'アドオンは、以下のWEBサイトから購入ができます。' ) ?>
                         </p>
                           <table class="setting_table">
                             <tbody>
@@ -68,24 +68,7 @@ if ( $messages = get_transient( 'post-updated' ) ) {
                                 </tr>
                             </tbody>
                         </table>
-                        <hr>
-                        <table class="setting_table">
-                            <tbody>
-                                <tr>
-                                    <th><?php $this->e('License key') ?></th>
-                                    <td>
-                                        <input type="text" id="wce-license-key" name="license_key" class="license_key" value="<?php echo esc_html($_POST['license_key']) ?>" style="width:350px">
-                                        <?php 
-                                        if( $this->is_certified() ){
-                                            echo '<strong>'.$this->_('Authenticated', '認証済み').'</strong>';
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
-                    <p class="submit"><input type="submit" id="wce-lsubmit" class="button-primary" value="<?php $this->e('Submit') ?>" /></p>
                 </form>
             </div>
         </div>

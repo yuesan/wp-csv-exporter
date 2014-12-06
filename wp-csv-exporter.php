@@ -20,10 +20,6 @@ define( 'WCE_PLUGIN_URL', untrailingslashit( plugins_url( '', __FILE__ ) ) );
 
 class WP_CSV_Exporter extends Base{
 	protected $textdomain = 'wce';
-	private $wce_keys = array(
-		'gumroad' => '5a9228e90e6b405a6db2fa95f0c8cb0af973e21d3e95e67e9b06e4e932bff3fa',
-		'storesjp' => '8ddafa75927b750cf51d51e070a90a8ba1a801ac501bc68e0ff3a8928942d4d1',
-	);
 
 	public function __construct() {
 		$this->init();
@@ -108,40 +104,6 @@ WHERE $wpdb->posts.post_type = '%s'
 AND $wpdb->postmeta.meta_key NOT LIKE '%s'
 EOL;
 		return $wpdb->get_results( $wpdb->prepare( $query, array( $value_parameter, $pattern ) ), ARRAY_A );
-	}
-
-
-	/**
-	 * ライセンスキーの確認
-	 */
-	public function verify_license_key( $license_key ) {
-		$license_key_sha256 = hash_hmac( 'sha256' , $license_key , false );
-		foreach ( $this->wce_keys as $key => $value ) {
-			if ( $value == $license_key_sha256 ) {
-				$wce_options['license_key'] = $license_key_sha256;
-				update_option( 'wce_options', $wce_options );
-				return true;
-			}
-		}
-		update_option( 'wce_options', $license_key );
-		return false;
-	}
-
-	/**
-	 * 認証確認
-	 *
-	 * @return boolean [description]
-	 */
-	public function is_certified() {
-		$wce_options = get_option( 'wce_options' );
-		if ( !empty( $wce_options ) && isset( $wce_options['license_key'] ) ) {
-			foreach ( $this->wce_keys as $key => $value ) {
-				if ( $wce_options['license_key'] == $value ) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 }

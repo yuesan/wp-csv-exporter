@@ -1,5 +1,7 @@
 <?php
-require_once dirname( __FILE__ ) . '/../../../../wp-load.php';
+if(isset($_POST['load_url'])){
+	require_once $_POST['load_url'];
+}
 require_once './functions.php';
 $errors = array();
 if (

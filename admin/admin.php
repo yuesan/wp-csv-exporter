@@ -26,6 +26,9 @@ unset(
     $post_taxonomies['post_format']
 );
 
+if( $wce_options = get_option('wce_options')){
+    $wce_post_type = $wce_options['post_type'];
+}
 ?>
 <script type="text/javascript">
 jQuery(function($){
@@ -42,7 +45,7 @@ jQuery(function($){
 
 <?php 
 foreach ( $post_types as $post_type ):
-    if( $post_type->name == 'post' || $post_type->name == 'page' || $this->is_certified() ):
+    if( $post_type->name == 'post' || $post_type->name == 'page' || $wce_post_type ):
 ?>
 $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
     var total_check_num = $("#form_<?php echo esc_attr( $post_type->name ) ?> input.post_status:checked").length;
@@ -85,13 +88,12 @@ endforeach;
 <?php foreach ( $post_types as $post_type ): ?>
 <li class="plugin_tab-<?php echo $post_type->name;?>"><?php echo $post_type->labels->name;?></li>
 <?php endforeach; ?>
-<li class="plugin_setting"><a href="<?php echo $this->setting_url('setting'); ?>"><?php $this->e( 'License key' ) ?></a></li>
 </ul>
 
 <div class="plugin_contents">
 <?php 
 foreach ( $post_types as $post_type ): 
-    if( $post_type->name == 'post' || $post_type->name == 'page' ||$this->is_certified() ):
+    if( $post_type->name == 'post' || $post_type->name == 'page' || $wce_post_type ):
 ?>
     <div class="plugin_content">
 <form action="<?php echo WCE_PLUGIN_URL .'/admin/download.php'; ?>" method="post" id="form_<?php echo esc_attr( $post_type->name ) ?>" target="_blank">
@@ -199,18 +201,18 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
     <th><?php $this->e( 'Select period to display.', '公開日の期間指定' ) ?></th>
     <td id="post_date-datepicker-wrap">
     <label for="post_date-datepicker-from">From</label>
-    <input type="text" id="post_date-datepicker-from" name="post_date_from"/>
+    <input type="text" name="post_date_from" class="post_date-datepicker" placeholder="yyyy-mm-dd" />
     <label for="post_date-datepicker-to">To</label>
-    <input type="text" id="post_date-datepicker-to" name="post_date_to"/>
+    <input type="text" name="post_date_to" class="post_date-datepicker" placeholder="yyyy-mm-dd" />
     </td>
 </tr>
 <tr>
     <th><?php $this->e( 'Select date modified.', '変更日の期間指定' ) ?></th>
     <td id="post_modified-datepicker-wrap">
     <label for="post_modified-datepicker-from">From</label>
-    <input type="text" id="post_modified-datepicker-from" name="post_modified_from"/>
+    <input type="text" name="post_modified_from" class="post_date-datepicker" placeholder="yyyy-mm-dd" />
     <label for="post_modified-datepicker-to">To</label>
-    <input type="text" id="post_modified-datepicker-to" name="post_modified_to"/>
+    <input type="text" name="post_modified_to" class="post_date-datepicker" placeholder="yyyy-mm-dd" />
     </td>
 </tr>
 <tr class="vt">
@@ -226,14 +228,14 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 </table>
 
 </div>
-
+<input type="hidden" name="load_url" value="<?php echo ABSPATH.'wp-load.php' ?>">
 <p class="submit"><input type="submit" class="button-primary" value="<?php $this->e( 'Export', 'エクスポート' ) ?> <?php echo $post_type->labels->name;?> CSV" <?php if ( !is_writable( $filename ) ) : ?>disabled<?php endif; ?> /></p>
 </form>
 </div>
 <?php else: ?>
     <div class="plugin_content">
-        <p><?php $this->e( 'Please enter a license key to download CSVs for custom post types.', 'カスタム投稿タイプのCSVをダウンロードするにはライセンスキーを登録してください。' ) ?></p> 
-        <p><a href="<?php echo $this->setting_url('setting'); ?>"><?php $this->e( 'Enter license key', 'ライセンスキーの登録' ) ?></a></p>
+        <p><?php $this->e( 'Please use Add-Ons to download CSVs for custom post types.', 'カスタム投稿タイプのCSVをダウンロードするにはアドオンを使用してください。' ) ?></p> 
+        <p><a href="<?php echo $this->setting_url('setting'); ?>"><?php $this->e( 'WP CSV Exporter Add-Ons' ) ?></a></p>
     </div>
 <?php 
     endif;
