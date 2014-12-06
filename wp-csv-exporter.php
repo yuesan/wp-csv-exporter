@@ -76,7 +76,7 @@ class WP_CSV_Exporter extends Base{
 	public function head_css() {
 		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME ) {
 			wp_enqueue_style( "wce_css", WCE_PLUGIN_URL . '/css/style.css' );
-			wp_enqueue_style( "jquery-ui_css", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.css' );
+			wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 		}
 	}
 
@@ -85,11 +85,10 @@ class WP_CSV_Exporter extends Base{
 	 */
 	public function head_js() {
 		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME && $_REQUEST["view"] != 'setting' ) {
-			wp_enqueue_script( "wce_admin_js", WCE_PLUGIN_URL . '/js/admin.js', array(
-					"jquery",
-				) );
-
-			wp_enqueue_script( "jquery-ui", WCE_PLUGIN_URL . '/js/jquery-ui/jquery-ui.js' );
+			wp_enqueue_script('jquery');
+			wp_enqueue_script( "jquery-ui-core" );
+			wp_enqueue_script( "jquery-ui-datepicker" );
+			wp_enqueue_script( "wce_admin_js", WCE_PLUGIN_URL . '/js/admin.js', array('jquery'), '', true );
 		}
 	}
 

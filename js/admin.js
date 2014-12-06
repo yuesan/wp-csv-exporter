@@ -23,4 +23,8 @@ jQuery(function($) {
         $(this).addClass('select')
     });
 
+    //カレンダー
+    var post_dates = $( '#post_date-datepicker-from, #post_date-datepicker-to, #post_modified-datepicker-from, #post_modified-datepicker-to' ).datepicker();
+    post_dates.datepicker("option", "dateFormat", 'yy-m-d');
+
 });

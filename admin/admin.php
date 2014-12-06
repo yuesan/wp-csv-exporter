@@ -30,42 +30,6 @@ unset(
 <script type="text/javascript">
 jQuery(function($){
 
-    //カレンダー / 公開日
-    var post_dates = jQuery( '#post_date-datepicker-from, #post_date-datepicker-to' ) . datepicker( {
-        showAnim: 'clip',
-        changeMonth: true,
-        numberOfMonths: 3,
-        showCurrentAtPos: 1,
-        onSelect: function( selectedDate ) {
-            var option = this . id == 'post_date-datepicker-from' ? 'minDate' : 'maxDate',
-                instance = jQuery( this ) . data( 'datepicker' ),
-                date = jQuery . datepicker . parseDate(
-                    instance . settings . dateFormat ||
-                    jQuery . datepicker . _defaults . dateFormat,
-                    selectedDate, instance . settings );
-            dates . not( this ) . datepicker( 'option', option, date );
-        }
-    } );
-    post_dates.datepicker("option", "dateFormat", 'yy-m-d');
-
-    //カレンダー / 更新日
-    var post_modifieds = jQuery( '#post_modified-datepicker-from, #post_modified-datepicker-to' ) . datepicker( {
-        showAnim: 'clip',
-        changeMonth: true,
-        numberOfMonths: 3,
-        showCurrentAtPos: 1,
-        onSelect: function( selectedDate ) {
-            var option = this . id == 'post_modified-datepicker-from' ? 'minDate' : 'maxDate',
-                instance = jQuery( this ) . data( 'datepicker' ),
-                date = jQuery . datepicker . parseDate(
-                    instance . settings . dateFormat ||
-                    jQuery . datepicker . _defaults . dateFormat,
-                    selectedDate, instance . settings );
-            dates . not( this ) . datepicker( 'option', option, date );
-        }
-    } );
-    post_modifieds.datepicker("option", "dateFormat", 'yy-m-d');
-
     //チェックボックス
     $('.all_checked').click(function(){
         var target = $(this).attr('data-target');
