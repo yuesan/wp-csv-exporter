@@ -72,7 +72,7 @@ class WP_CSV_Exporter extends Base{
 	public function head_css() {
 		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME ) {
 			wp_enqueue_style( "wce_css", WCE_PLUGIN_URL . '/css/style.css' );
-			wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+			wp_enqueue_style('jquery-ui-style',  WCE_PLUGIN_URL . '/css/jquery-ui.css');
 		}
 	}
 
