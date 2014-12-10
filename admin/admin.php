@@ -198,6 +198,13 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 <td><input type="text" name="limit" class="limit" value="0"> <?php $this->e( '*All downloaded if "0" selected.', '※0の場合はすべてダウンロード' ) ?></td>
 </tr>
 <tr>
+<th><?php $this->e( 'Sorting by date.' ) ?></th>
+<td class="vt">
+<label style="margin-right:3em;"><input type="radio" name="order_by" value="DESC" checked="checked"> <?php $this->e( 'DESC' ) ?></label>
+<label><input type="radio" name="order_by" value="ASC"> <?php $this->e( 'ASC' ) ?></label>
+</td>
+</tr>
+<tr>
     <th><?php $this->e( 'Select period to display.', '公開日の期間指定' ) ?></th>
     <td id="post_date-datepicker-wrap">
     <label for="post_date-datepicker-from">From</label>

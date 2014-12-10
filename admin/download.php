@@ -17,6 +17,7 @@ if (
 	$posts_values = esc_htmls( $_POST['posts_values'] );
 	$post_status = esc_htmls( $_POST['post_status'] );
 	$limit = esc_html( $_POST['limit'] );
+	$order_by = esc_html( $_POST['order_by'] );
 	$post_date_from = esc_html( $_POST['post_date_from'] );
 	$post_date_to = esc_html( $_POST['post_date_to'] );
 	$post_modified_from = esc_html( $_POST['post_modified_from'] );
@@ -72,6 +73,12 @@ if (
 	if ( !empty( $limit ) ) {
 		$query .= "LIMIT %d ";
 		$value_parameter[] = $limit;
+	}
+	//ソート順
+	if ( $order_by == 'DESC' ) {
+		$query .= "ORDER BY post_date DESC, post_modified DESC ";
+	}elseif ( $order_by == 'ASC' ) {
+		$query .= "ORDER BY post_date ASC, post_modified ASC ";
 	}
 
 	//DBから取得
