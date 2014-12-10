@@ -1,42 +1,12 @@
 <?php 
 require_once WCE_PLUGIN_DIR . '/admin/functions.php';
-
-if(
-    isset( $_POST['license_key'] ) &&
-    is_user_logged_in() &&
-    isset( $_POST['_wpnonce'] ) &&
-    wp_verify_nonce( $_POST['_wpnonce'], 'csv_exporter' ) 
-   ){
-    //エラー
-    $e = new WP_Error();
-    $license_key = esc_html($_POST['license_key']);
-
-    //認証
-    if( $this->verify_license_key($license_key) ){
-        $e->add( 'error', $this->_( "License key has been authenticated.", 'ライセンスキーが認証されました。' ) );
-        set_transient( 'post-updated', $e->get_error_messages(), 1 );
-    }else{
-        $e->add( 'error', $this->_( "License key authentication failed.", 'ライセンスキーの認証に失敗しました。' ) );
-        set_transient( 'post-error', $e->get_error_messages(), 1 );
-    }
-
-}
-
-//保存成功
-if ( $messages = get_transient( 'post-updated' ) ) {
-    display_messages( $messages, 'updated' );
-
-//保存失敗
-}elseif ( $messages = get_transient( 'post-error' ) ) {
-    display_messages( $messages, 'error' );
-}
 ?>
 <div class="wrap plugin-wrap">
 
     <div class="plugin-main-area">
         <h2><?php $this->e('WP CSV Exporter', 'WP CSV Exporter') ?></h2>
         <p>
-            <?php $this->e( 'WP CSV Exporter Add-Ons', 'ライセンスキーの入力。' ) ?>
+            <?php $this->e( 'WP CSV Exporter Add-Ons' ) ?>
         </p>
 
         <ul class="plugin_tab">

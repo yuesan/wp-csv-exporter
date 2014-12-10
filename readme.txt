@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/2TUGZOYJW8T4T/?_encoding=
 Tags: : csv, custom post, export, extract, import, csv import, csv importer, csv to custom post type, import, import CSV, wordpress csv import
 Requires at least: 3.0 or higher
 Tested up to: 4.0
-Stable tag: 1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,10 @@ It is also possible to set the number or date range of posts to download.
 1. Upload the entire `wp-csv-exporter` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. The control panel of WP CSV Exporter is in 'Tools > CSV Export'.
+
+
+== Screenshots ==
+1. `/assets/screenshot-1.png`
 
 
 == How to customize export post data == 
@@ -178,7 +182,7 @@ function wp_csv_exporter_tax_dogs_filter( $term_values, $post_id ) {
 `
 
 
-= wp_csv_exporter_tax_{custom_field_key} =
+= wp_csv_exporter_{custom_field_key} =
 
 Parameters:
 * `$field` - (required) post custom field
@@ -194,5 +198,5 @@ function wp_csv_exporter_price_filter( $field, $post_id ) {
 
 
 == Changelog ==
-**1.0.0 - December 01, 2014**  
+**1.0.0 - December 10, 2014**  
 Initial release.

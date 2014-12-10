@@ -257,8 +257,8 @@ endforeach;
 <div class="inner">
 
 <div class="box">
-<?php $this->e( 'The detailed explanation of this plugin is this url. ' );?>
-<a href="http://www.kigurumi.asia/imake/2548/" target="_blank">http://www.kigurumi.asia/imake/2548/</a>
+<?php $this->e( 'The detailed explanation of this plugin is this url.(Japanese Only)' );?>
+<a href="http://www.kigurumi.asia/" target="_blank">http://www.kigurumi.asia/</a>
 <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fkigurumi.oihagi&amp;width=278&amp;height=62&amp;show_faces=false&amp;colorscheme=light&amp;stream=false&amp;show_border=false&amp;header=false&amp;appId=355939381181327" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;" allowTransparency="true"></iframe>
 </div>
 
