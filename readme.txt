@@ -3,12 +3,12 @@ Contributors: Nakashima Masahiro
 Donate link: http://www.amazon.co.jp/registry/wishlist/2TUGZOYJW8T4T/?_encoding=UTF8&camp=247&creative=7399&linkCode=ur2&tag=wpccc-22
 Tags: : csv, custom post, export, extract, import, csv import, csv importer, csv to custom post type, import, import CSV, wordpress csv import
 Requires at least: 3.0 or higher
-Tested up to: 4.0
-Stable tag: 1.0.0
+Tested up to: 4.1
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-You can export posts in CSV format for each post type. It is compatible with posts' custom fields and custom taxonomies. It is also possible to set the number or date range of posts to download.
+You can export posts in CSV format for each post type. It is compatible with posts' custom fields and custom taxonomies. 
 
 == Description ==
 You can export posts in CSV format for each post type.
@@ -21,6 +21,10 @@ It is also possible to set the number or date range of posts to download.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. The control panel of WP CSV Exporter is in 'Tools > CSV Export'.
 
+== Frequently Asked Questions ==
+
+= How to import CSV? =
+Maybe You should use "<a href="https://wordpress.org/plugins/really-simple-csv-importer/" target="_blank">Really Simple CSV Importer</a>" plugin.
 
 == Screenshots ==
 1. `/assets/screenshot-1.png`
@@ -48,6 +52,7 @@ This plugin has below filters.
 = wp_csv_exporter_post_name =
 
 Parameters:
+
 * `$post_name` - (required) post slug
 * `$post_id` - (int) post id
 
@@ -63,6 +68,7 @@ function wp_csv_exporter_post_name_filter( $post_name, $post_id  ) {
 = wp_csv_exporter_post_title =
 
 Parameters:
+
 * `$post_title` - (required) post title
 * `$post_id` - (int) post id
 
@@ -79,6 +85,7 @@ function wp_csv_exporter_post_title_filter( $post_title, $post_id  ) {
 = wp_csv_exporter_post_content =
 
 Parameters:
+
 * `$post_content` - (required) post content
 * `$post_id` - (int) post id
 
@@ -86,6 +93,7 @@ Parameters:
 = wp_csv_exporter_post_excerpt =
 
 Parameters:
+
 * `$post_excerpt` - (required) post excerpt
 * `$post_id` - (int) post id
 
@@ -93,6 +101,7 @@ Parameters:
 = wp_csv_exporter_post_status =
 
 Parameters:
+
 * `$post_status` - (required) post status
 * `$post_id` - (int) post id
 
@@ -100,6 +109,7 @@ Parameters:
 = wp_csv_exporter_post_author =
 
 Parameters:
+
 * `$post_author` - (required) post author
 * `$post_id` - (int) post id
 
@@ -107,6 +117,7 @@ Parameters:
 = wp_csv_exporter_post_date =
 
 Parameters:
+
 * `$post_date` - (required) post date
 * `$post_id` - (int) post id
 
@@ -114,6 +125,7 @@ Parameters:
 = wp_csv_exporter_post_modified =
 
 Parameters:
+
 * `$post_modified` - (required) post modified date
 * `$post_id` - (int) post id
 
@@ -121,6 +133,7 @@ Parameters:
 = wp_csv_exporter_post_thumbnail_url =
 
 Parameters:
+
 * `$post_thumbnail_url` - (required) post thumbnail_url
 * `$post_id` - (int) post id
 
@@ -128,6 +141,7 @@ Parameters:
 = wp_csv_exporter_post_tags =
 
 Parameters:
+
 * `$post_tags` - (array)(required) post tags
 * `$post_id` - (int) post id
 
@@ -147,6 +161,7 @@ function wp_csv_exporter_post_tags_filter( $post_tags, $post_id  ) {
 = wp_csv_exporter_category =
 
 Parameters:
+
 * `$category` - (array)(required) post category
 * `$post_id` - (int) post id
 
@@ -166,6 +181,7 @@ function wp_csv_exporter_post_category_filter( $category, $post_id  ) {
 = wp_csv_exporter_tax_{taxonomy} =
 
 Parameters:
+
 * `$term_values` - (array)(required) post taxonomy
 * `$post_id` - (int) post id
 
@@ -185,6 +201,7 @@ function wp_csv_exporter_tax_dogs_filter( $term_values, $post_id ) {
 = wp_csv_exporter_{custom_field_key} =
 
 Parameters:
+
 * `$field` - (required) post custom field
 * `$post_id` - (int) post id
 

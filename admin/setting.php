@@ -1,6 +1,3 @@
-<?php 
-require_once WCE_PLUGIN_DIR . '/admin/functions.php';
-?>
 <div class="wrap plugin-wrap">
 
     <div class="plugin-main-area">

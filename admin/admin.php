@@ -56,7 +56,7 @@ $('#form_<?php echo esc_attr( $post_type->name ) ?>').submit(function(){
 
     //件数
     if(!$('#form_<?php echo esc_attr( $post_type->name ) ?> input.limit').val().match(/^[0-9]+$/)){
-        alert('<?php $this->e( 'The number of articles must be entered in numerical format.', '記事数は数値のみが入力可能です。' ) ?>');
+        alert('<?php $this->e( 'The number of posts must be entered in numerical format.', '記事数は数値のみが入力可能です。' ) ?>');
         return false;
     }
 });
@@ -194,7 +194,7 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 <table class="setting_table">
 <tbody>
 <tr>
-<th><?php $this->e( 'Number of articles to download.', 'ダウンロードする記事件数' ) ?></th>
+<th><?php $this->e( 'Number of posts to download.', 'ダウンロードする記事件数' ) ?></th>
 <td><input type="text" name="limit" class="limit" value="0"> <?php $this->e( '*All downloaded if "0" selected.', '※0の場合はすべてダウンロード' ) ?></td>
 </tr>
 <tr>

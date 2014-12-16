@@ -4,7 +4,7 @@ Plugin Name: WP CSV Exporter
 Plugin URI: http://www.kigurumi.asia
 Description: You can export posts in CSV format for each post type. It is compatible with posts' custom fields and custom taxonomies. It is also possible to set the number or date range of posts to download.
 Author: Nakashima Masahiro
-Version: 1.0.0
+Version: 1.0.1
 Author URI: http://www.kigurumi.asia
 License: GPLv2 or later
 Text Domain: wce
@@ -12,7 +12,7 @@ Domain Path: /languages/
  */
 require('classes/base.php');
 
-define( 'WCE_VERSION', '1.0.0' );
+define( 'WCE_VERSION', '1.0.1' );
 define( 'WCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCE_PLUGIN_NAME', trim( dirname( WCE_PLUGIN_BASENAME ), '/' ) );
 define( 'WCE_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
