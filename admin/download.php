@@ -13,16 +13,16 @@ if (
 	check_admin_referer( 'csv_exporter' );
 
 	global $wpdb;
-	$post_type = get_post_type_object( $_POST['post_type'] );
-	$posts_values = esc_htmls( $_POST['posts_values'] );
-	$post_status = esc_htmls( $_POST['post_status'] );
-	$limit = esc_html( $_POST['limit'] );
-	$order_by = esc_html( $_POST['order_by'] );
-	$post_date_from = esc_html( $_POST['post_date_from'] );
-	$post_date_to = esc_html( $_POST['post_date_to'] );
+	$post_type          = get_post_type_object( $_POST['post_type'] );
+	$posts_values       = esc_htmls( $_POST['posts_values'] );
+	$post_status        = esc_htmls( $_POST['post_status'] );
+	$limit              = esc_html( $_POST['limit'] );
+	$order_by           = esc_html( $_POST['order_by'] );
+	$post_date_from     = esc_html( $_POST['post_date_from'] );
+	$post_date_to       = esc_html( $_POST['post_date_to'] );
 	$post_modified_from = esc_html( $_POST['post_modified_from'] );
-	$post_modified_to = esc_html( $_POST['post_modified_to'] );
-	$string_code = esc_html( $_POST['string_code'] );
+	$post_modified_to   = esc_html( $_POST['post_modified_to'] );
+	$string_code        = esc_html( $_POST['string_code'] );
 
 	// SQL文作成
 	$query = "";
