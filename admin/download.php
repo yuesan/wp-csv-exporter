@@ -67,17 +67,18 @@ if (
 		$value_parameter[] = $post_modified_from;
 		$value_parameter[] = $post_modified_to;
 	}
-	//記事数が指定されている時
-	if ( !empty( $limit ) ) {
-		$query .= "LIMIT %d ";
-		$value_parameter[] = $limit;
-	}
 	//ソート順
 	if ( $order_by == 'DESC' ) {
 		$query .= "ORDER BY post_date DESC, post_modified DESC ";
 	}elseif ( $order_by == 'ASC' ) {
 		$query .= "ORDER BY post_date ASC, post_modified ASC ";
 	}
+	//記事数が指定されている時
+	if ( !empty( $limit ) ) {
+		$query .= "LIMIT %d ";
+		$value_parameter[] = $limit;
+	}
+
 
 	//DBから取得
 	$prepare = $wpdb->prepare( $query, $value_parameter );
@@ -237,9 +238,8 @@ if (
 
 	}else {
 		//結果がない場合
-		$errors[] = $post_type->name.' post type has no posts.';
+		$errors[] = '"' . $post_type->name.'" post type has no posts.';
 	}
-	return;
 
 }else{
 	$errors[] = 'エラーが起きました。';
