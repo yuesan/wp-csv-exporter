@@ -4,7 +4,7 @@ Plugin Name: WP CSV Exporter
 Plugin URI: http://www.kigurumi.asia
 Description: You can export posts in CSV format for each post type. It is compatible with posts' custom fields and custom taxonomies. It is also possible to set the number or date range of posts to download.
 Author: Nakashima Masahiro
-Version: 1.0.1
+Version: 1.0.2
 Author URI: http://www.kigurumi.asia
 License: GPLv2 or later
 Text Domain: wce
@@ -12,7 +12,7 @@ Domain Path: /languages/
  */
 require('classes/base.php');
 
-define( 'WCE_VERSION', '1.0.1' );
+define( 'WCE_VERSION', '1.0.2' );
 define( 'WCE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WCE_PLUGIN_NAME', trim( dirname( WCE_PLUGIN_BASENAME ), '/' ) );
 define( 'WCE_PLUGIN_DIR', untrailingslashit( dirname( __FILE__ ) ) );
@@ -70,7 +70,7 @@ class WP_CSV_Exporter extends Base{
 	 * 管理画面CSS追加
 	 */
 	public function head_css() {
-		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME ) {
+		if (  isset($_REQUEST["page"]) && $_REQUEST["page"] == WCE_PLUGIN_NAME ) {
 			wp_enqueue_style( "wce_css", WCE_PLUGIN_URL . '/css/style.css' );
 			wp_enqueue_style('jquery-ui-style',  WCE_PLUGIN_URL . '/css/jquery-ui.css');
 		}
@@ -80,7 +80,7 @@ class WP_CSV_Exporter extends Base{
 	 * 管理画面JS追加
 	 */
 	public function head_js() {
-		if ( $_REQUEST["page"] == WCE_PLUGIN_NAME && $_REQUEST["view"] != 'setting' ) {
+		if ( isset($_REQUEST["page"]) && $_REQUEST["page"] == WCE_PLUGIN_NAME && $_REQUEST["view"] != 'setting' ) {
 			wp_enqueue_script('jquery');
 			wp_enqueue_script( "jquery-ui-core" );
 			wp_enqueue_script( "jquery-ui-datepicker" );

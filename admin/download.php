@@ -30,7 +30,7 @@ if (
 	// wp_postsテーブルから指定したpost_typeの公開記事を取得
 	$query_select = 'ID as %s, post_type, post_status';
 	$value_parameter[] = $_POST['post_id'];
-	if ( isset( $posts_values ) ) {
+	if ( !empty($posts_values) ) {
 		foreach ( $posts_values as $key => $value ) {
 			$query_select .= ', '.$value;
 		}
