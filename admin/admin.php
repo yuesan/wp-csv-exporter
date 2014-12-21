@@ -103,7 +103,7 @@ foreach ( $post_types as $post_type ):
 <h3><?php echo $post_type->labels->name;?> <?php $this->e( 'Settings', '設定' ) ?></h3>
 <ul class="setting_list">
     <li><label><input type="radio" name="post_id" value="post_id" checked="checked" required>*<?php $this->e( 'Post ID', '投稿ID' ) ?></label></li>
-    <li><label><input type="radio" name="post_type" value="<?php echo esc_attr( $post_type->name ) ?>" checked="checked" required>*<?php $this->e( 'Post Type', '投稿タイプ' ) ?></label></li>
+    <li><label><input type="radio" name="type" value="<?php echo esc_attr( $post_type->name ) ?>" checked="checked" required>*<?php $this->e( 'Post Type', '投稿タイプ' ) ?></label></li>
     <li><label><input type="checkbox" name="posts_values[]" value="post_name" checked="checked"><?php $this->e( 'Slug', 'スラッグ' ) ?></label></li>
     <li><label><input type="checkbox" name="posts_values[]" value="post_title" checked="checked"><?php $this->e( 'Post Title', '記事タイトル' ) ?></label></li>
     <li><label><input type="checkbox" name="posts_values[]" value="post_content" checked="checked"><?php $this->e( 'Post Content', '記事本文' ) ?></label></li>
@@ -233,9 +233,8 @@ $cf_results = $this->get_custom_field_list( $post_type->name );
 </tr>
 </tbody>
 </table>
-
 </div>
-<input type="hidden" name="load_url" value="<?php echo ABSPATH.'wp-load.php' ?>">
+
 <p class="submit"><input type="submit" class="button-primary" value="<?php $this->e( 'Export', 'エクスポート' ) ?> <?php echo $post_type->labels->name;?> CSV" <?php if ( !is_writable( $filename ) ) : ?>disabled<?php endif; ?> /></p>
 </form>
 </div>

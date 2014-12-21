@@ -1,11 +1,9 @@
 <?php
-if(isset($_POST['load_url'])){
-	require_once $_POST['load_url'];
-}
+require_once '../../../../wp-load.php';
 require_once './functions.php';
 $errors = array();
 if (
-	isset( $_POST['post_type'] ) &&
+	isset( $_POST['type'] ) &&
 	is_user_logged_in() &&
 	isset( $_POST['_wpnonce'] ) &&
 	wp_verify_nonce( $_POST['_wpnonce'], 'csv_exporter' )
@@ -13,7 +11,7 @@ if (
 	check_admin_referer( 'csv_exporter' );
 
 	global $wpdb;
-	$post_type          = get_post_type_object( $_POST['post_type'] );
+	$post_type          = get_post_type_object( $_POST['type'] );
 	$posts_values       = esc_htmls( $_POST['posts_values'] );
 	$post_status        = esc_htmls( $_POST['post_status'] );
 	$limit              = esc_html( $_POST['limit'] );
@@ -93,6 +91,7 @@ if (
 			/**
 			 * フィルター追加
 			 */
+			// TODO: フィルター追加処理をまとめる
 			// foreach ($posts_values as $key => $value) {
 			//  $_result = apply_filters( 'wp_csv_exporter_'.$value, $result[$value], $result['post_id'] );
 			//  $customs_array += array( $value => $_result );
@@ -238,8 +237,9 @@ if (
 
 	}else {
 		//結果がない場合
-		$errors[] = $post_type->name.' post type" has no posts.';
+		$errors[] = $post_type->name.' post type has no posts.';
 	}
+	return;
 
 }else{
 	$errors[] = 'エラーが起きました。';
@@ -250,7 +250,6 @@ if(!empty($errors)){
 	foreach ($errors as $key => $value) {
 		echo $value.PHP_EOL;
 	}
+	return;
+
 }
-
-
-
