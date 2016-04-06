@@ -1,6 +1,8 @@
 <?php
-require_once '../../../../wp-load.php';
+
 require_once './functions.php';
+require_once '../../../../wp-load.php';
+
 $errors = array();
 if (
 	isset( $_POST['type'] ) &&
